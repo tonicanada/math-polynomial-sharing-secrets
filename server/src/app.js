@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const secret = require("./secret.json");
+const cors = require("cors");
 const { serverPort, secretSize } = require("../config");
 
 const Polynomial = require("polynomial");
@@ -13,6 +14,12 @@ const {
 
 const app = express();
 app.use(bodyParser.json());
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 const port = serverPort;
 
@@ -77,3 +84,6 @@ app.post("/build-secret-poly", (req, res) => {
 app.listen(port, () => {
   console.log(`Express Server listening on port ${port}...`);
 });
+
+
+// app.get('download-shares')

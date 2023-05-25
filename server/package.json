@@ -12,8 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
-    "polynomial": "^1.4.5"
+    "polynomial": "^1.4.5",
+    "write-excel-file": "^1.4.26"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

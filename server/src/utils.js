@@ -45,7 +45,7 @@ const modInverse = (num, p) => {
 };
 
 const extendedEuclidean = (a, b) => {
-  console.log("a", a, "b", b)
+  // console.log("a", a, "b", b)
   if (b === 0) {
     return [a, 1, 0];
   }
