@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const secret = require("./secret.json");
@@ -12,8 +13,22 @@ const {
   lagrangeInterpolation,
 } = require("./polyFunctions");
 
+const {
+  generateExcelWithShares,
+  checkSecretWithExcelShares,
+} = require("./excelFunctions");
+
 const app = express();
 app.use(bodyParser.json());
+
+const storage = multer.diskStorage({
+  destination: "./temp/", // Carpeta donde se guardarán los archivos
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname); // Nombre del archivo guardado en el servidor
+  },
+});
+
+const upload = multer({ storage });
 
 app.use(
   cors({
@@ -80,10 +95,64 @@ app.post("/build-secret-poly", (req, res) => {
   res.send(poly);
 });
 
+app.get("/download-shares", async (req, res) => {
+  try {
+    await generateExcelWithShares(secret);
+    filePath = "./temp/secret-shares.xlsx";
+    res.download(filePath, (err) => {
+      if (err) {
+        console.log(err);
+        console.error("Error downloading file.");
+        res.status(500).send("Error downloading file.");
+      }
+    });
+  } catch (error) {
+    console.error("Error generating Excel with shares.");
+    res.status(500).send("Error generating Excel with shares");
+  }
+});
+
+app.post("/check-secret", upload.single("file"), async (req, res) => {
+  // Aquí puedes acceder al archivo subido a través de req.file
+  try {
+    console.log(req.file);
+    const check = await checkSecretWithExcelShares(
+      secret,
+      req.file.path,
+      prime
+    );
+
+    if (check.decoded) {
+      res.status(200).json({
+        message: `Secret decoded successfully!!!\n Secret value is ${check.value}`,
+      });
+    } else {
+      res.status(200).json({
+        message: "Secret decryption was not successful",
+      });
+    }
+  } catch (error) {
+    console.log(error, "JJJJ")
+    console.log(error.message);
+    if (error.message === "Wrong header") {
+      res.status(500).send(error.message);
+    } else if (error.message === "Wrong number of people required") {
+      res.status(500).send(error.message);
+    }
+  }
+
+  fs.unlink(req.file.path, (error) => {
+    if (error) {
+      console.error("Error deleting file:", error);
+    } else {
+      console.log("File deleted successfully");
+    }
+  });
+});
+
 // Starts the server
 app.listen(port, () => {
   console.log(`Express Server listening on port ${port}...`);
 });
-
 
 // app.get('download-shares')

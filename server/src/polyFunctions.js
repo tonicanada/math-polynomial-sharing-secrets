@@ -41,9 +41,7 @@ const lagrangeInterpolation = (points, p) => {
 const generateRandomPolynomial = (degree, min, max) => {
   const coefArray = new Array(degree).fill(0);
   for (let i = 0; i < degree; i++) {
-    if (i === 0 || i === degree - 1) {
-      coefArray[i] = getRandomNumber(min, max);
-    }
+    coefArray[i] = getRandomNumber(min, max);
   }
   const poly = new Polynomial(coefArray);
 

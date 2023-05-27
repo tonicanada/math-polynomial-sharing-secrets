@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import Button from "react-bootstrap/Button";
-import { httpGenerateSecret } from "./requests";
+import { httpGenerateSecret, httpDownloadShares } from "./requests";
 
 Modal.setAppElement("#root");
 
@@ -61,16 +61,27 @@ const FirstModal = ({ isOpen, onClose, onSubmit, header }) => {
   );
 };
 
-const SecondModal = ({ isOpen, onClose, message, header }) => {
+const SecondModal = ({ isOpen, onClose, message, onDownloadClick }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customModalStyles}>
       <p className="fs-4">{message}</p>
-      <Button className="col-12 fs-5 mt-4" onClick={onClose}>Close</Button>
+      <Button
+        className="col-12 fs-5 mt-2 btn-secondary"
+        onClick={() => {
+          onDownloadClick();
+          onClose();
+        }}
+      >
+        Download Shares
+      </Button>
+      <Button className="col-12 fs-5 mt-4" onClick={onClose}>
+        Close
+      </Button>
     </Modal>
   );
 };
 
-const ModalApp = () => {
+const GenerateSecretModal = () => {
   const [firstModalIsOpen, setFirstModalIsOpen] = useState(false);
   const [secondModalIsOpen, setSecondModalIsOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -93,16 +104,24 @@ const ModalApp = () => {
   };
 
   const handleSubmitFirstModal = async (total, required) => {
+    total = Number(total);
+    required = Number(required);
+
     try {
-      // Realizar la llamada a la API
+      if (required > total) {
+        closeFirstModal();
+        setMessage("Total people must be greater than the required people");
+        setSecondModalIsOpen(true);
+        return;
+      }
+
+      // Call API
       const response = await httpGenerateSecret(total, required);
 
       if (response.ok) {
-        // La llamada a la API fue exitosa
         closeFirstModal();
-        setMessage("El secreto se genero correctamente!");
+        setMessage("Secret generated successfully!");
         setSecondModalIsOpen(true);
-        console.log(response);
       } else {
         // La llamada a la API falló
         closeFirstModal();
@@ -119,12 +138,18 @@ const ModalApp = () => {
     }
   };
 
+  const handleSubmitDownloadShares = async () => {
+    const response = await httpDownloadShares();
+    console.log(response);
+  };
+
   return (
     <div className="modal-container">
       <Button
         variant="primary"
         className="app-button btn-lg"
         onClick={openFirstModal}
+        style={{ width: '200px' }}
       >
         Generate Secret
       </Button>
@@ -137,9 +162,10 @@ const ModalApp = () => {
         isOpen={secondModalIsOpen}
         onClose={closeSecondModal}
         message={message}
+        onDownloadClick={handleSubmitDownloadShares}
       />
     </div>
   );
 };
 
-export default ModalApp;
+export default GenerateSecretModal;
