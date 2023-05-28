@@ -20,9 +20,8 @@ body {
 }
 
 .btns-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  grid-column-gap: 0px;
+  display: flex;
+  justify-content: space-between;
 }
 
 
@@ -38,7 +37,7 @@ h2 {
 
 
 .modal-container {
-  margin: 30px;
+  margin: 20px;
 }
 
 .app-title {
@@ -69,4 +68,14 @@ h2 {
 .current-secret {
   margin-bottom: 40px;
   width: 780px;
+}
+
+.btn-lg {
+  width: 200px;
+}
+
+.upload-text {
+  width: 450px;
+  margin: 0 auto;
+  text-align: center;
 }

@@ -89,6 +89,12 @@ const FirstModal = ({
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customModalStyles}>
       <h2 className="mb-4 fs-3">Please enter the data</h2>
+      <div className="upload-text">
+        <p>
+          Please upload an excel with 2 columns: 'Person Id' and 'Share Value'
+          with the required shares to decode the secret.
+        </p>
+      </div>
       <TargetBox onDrop={handleFileDrop} />
       <FileList files={droppedFiles} />
       <Button className="col-12 fs-5 mt-4" onClick={onClick}>
@@ -171,7 +177,6 @@ const DecodeSecretModal = () => {
         variant="primary"
         className="app-button btn-lg"
         onClick={openFirstModal}
-        style={{ width: "200px" }}
       >
         Decode Secret
       </Button>

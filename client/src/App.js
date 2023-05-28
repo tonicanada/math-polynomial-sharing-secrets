@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import GenerateSecretModal from "./GenerateSecretModal";
 import DecodeSecretModal from "./DecodeSecretModal";
+import ClearSecretModal from "./ClearSecretModal";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { httpGetPublicDataCurrentSecret } from "./requests";
@@ -49,20 +50,30 @@ const App = () => {
         </div>
         <div className="paragraph text-center border p-3 current-secret">
           <p>Current Secret Info:</p>
-          <p>
-            The current secret requires the code of{" "}
-            {currentPublicDataSecret.requiredPeople} people to be discovered.
-            <br /> There are a total of {
-              currentPublicDataSecret.totalPeople
-            }{" "}
-            people with codes (shares).
-          </p>
+          {currentPublicDataSecret.totalPeople ? (
+            <p>
+              The current secret requires the code of{" "}
+              {currentPublicDataSecret.requiredPeople} people to be discovered.
+              <br /> There are a total of {
+                currentPublicDataSecret.totalPeople
+              }{" "}
+              people with codes (shares).
+            </p>
+          ) : (
+            <p>
+              There is no current secret, click on "Generate Secret" to create
+              one.
+            </p>
+          )}
         </div>
         <div className="btns-container">
           <GenerateSecretModal
             setCurrentPublicDataSecret={setCurrentPublicDataSecret}
           />
           <DecodeSecretModal />
+          <ClearSecretModal
+            setCurrentPublicDataSecret={setCurrentPublicDataSecret}
+          />
         </div>
       </div>
     </DndProvider>

@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 function list(files) {
   const label = (file) => {
     console.log(file);
-    return `'${file.name}' of size '${file.size}' and type '${file.type}'`;
+    return `'${file.name}' of size '${file.size}'`;
     
   };
 

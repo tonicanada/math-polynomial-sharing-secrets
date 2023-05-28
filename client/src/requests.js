@@ -1,7 +1,7 @@
 import { saveAs } from "file-saver";
 import axios from "axios";
 
-const API_URL = "http://localhost:8000";
+const API_URL = "";
 
 // Generate a secret
 async function httpGenerateSecret(totalPeople, requiredPeople) {
@@ -59,9 +59,22 @@ async function httpCheckSecret(droppedFiles) {
 async function httpGetPublicDataCurrentSecret() {
   try {
     const response = await fetch(`${API_URL}/get-public-data-current-secret`);
-    return await response.json()
+    return await response.json();
   } catch (error) {
     console.log("Error fetching the data:", error);
+  }
+}
+
+async function httpClearSecret() {
+  try {
+    const response = await fetch(`${API_URL}/clear-secret`, {
+      method: "post",
+    });
+    return response;
+  } catch (error) {
+    return {
+      ok: false,
+    };
   }
 }
 
@@ -70,4 +83,5 @@ export {
   httpDownloadShares,
   httpCheckSecret,
   httpGetPublicDataCurrentSecret,
+  httpClearSecret
 };

@@ -148,7 +148,6 @@ const GenerateSecretModal = ({ setCurrentPublicDataSecret }) => {
       if (response.ok) {
         closeFirstModal();
         setResponseStatus(true);
-        console.log(responseStatus);
         setMessage("Secret generated successfully!");
         setSecondModalIsOpen(true);
         setCurrentPublicDataSecret({
@@ -184,7 +183,6 @@ const GenerateSecretModal = ({ setCurrentPublicDataSecret }) => {
         variant="primary"
         className="app-button btn-lg"
         onClick={openFirstModal}
-        style={{ width: "200px" }}
       >
         Generate Secret
       </Button>

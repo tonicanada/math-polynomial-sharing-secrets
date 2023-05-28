@@ -1,5 +1,7 @@
 const express = require("express");
 const multer = require("multer");
+const morgan = require("morgan");
+const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const secret = require("./secret.json");
@@ -19,7 +21,9 @@ const {
 } = require("./excelFunctions");
 
 const app = express();
+app.use(morgan("combined"));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "..", "public")));
 
 const storage = multer.diskStorage({
   destination: "./temp/", // Carpeta donde se guardarán los archivos
@@ -39,6 +43,7 @@ app.use(
 const port = serverPort;
 
 const prime = findNextPrime(secret.totalPeople, secretSize);
+
 
 // Route that reads the secret polynomial stored in secret.json
 // and returns it as string (an*x^n + an-1*x^n-1 + ... +a0)
@@ -93,6 +98,22 @@ app.post("/build-secret-poly", (req, res) => {
   }
   const poly = lagrangeInterpolation(points, prime);
   res.send(poly);
+});
+
+app.post("/clear-secret", (req, res) => {
+  const polySecret = [];
+  const totalPeople = null;
+  const requiredPeople = null;
+  const shares = {};
+  const jsonData = { polySecret, totalPeople, requiredPeople, shares };
+  fs.writeFile("./src/secret.json", JSON.stringify(jsonData), (err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error clearing secret");
+    } else {
+      res.send("Secret cleared successfully");
+    }
+  });
 });
 
 app.get("/download-shares", async (req, res) => {
@@ -162,9 +183,14 @@ app.get("/get-public-data-current-secret", async (req, res) => {
   });
 });
 
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "index.html"))
+})
+
+
 // Starts the server
 app.listen(port, () => {
   console.log(`Express Server listening on port ${port}...`);
 });
 
-// app.get('download-shares')
