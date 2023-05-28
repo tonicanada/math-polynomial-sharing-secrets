@@ -20,9 +20,17 @@ const customModalStyles = {
   },
 };
 
-const FirstModal = ({ isOpen, onClose, onSubmit, header }) => {
-  const [totalPeople, setTotalPeople] = useState("");
-  const [requiredPeople, setRequiredPeople] = useState("");
+const FirstModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  totalPeople,
+  setTotalPeople,
+  requiredPeople,
+  setRequiredPeople,
+}) => {
+  // const [totalPeople, setTotalPeople] = useState("");
+  // const [requiredPeople, setRequiredPeople] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -61,19 +69,28 @@ const FirstModal = ({ isOpen, onClose, onSubmit, header }) => {
   );
 };
 
-const SecondModal = ({ isOpen, onClose, message, onDownloadClick }) => {
+const SecondModal = ({
+  isOpen,
+  onClose,
+  message,
+  onDownloadClick,
+  responseStatus,
+}) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customModalStyles}>
       <p className="fs-4">{message}</p>
-      <Button
-        className="col-12 fs-5 mt-2 btn-secondary"
-        onClick={() => {
-          onDownloadClick();
-          onClose();
-        }}
-      >
-        Download Shares
-      </Button>
+      {responseStatus ? (
+        <Button
+          className="col-12 fs-5 mt-2 btn-secondary"
+          onClick={() => {
+            onDownloadClick();
+            onClose();
+          }}
+        >
+          Download Shares
+        </Button>
+      ) : null}
+
       <Button className="col-12 fs-5 mt-4" onClick={onClose}>
         Close
       </Button>
@@ -81,9 +98,10 @@ const SecondModal = ({ isOpen, onClose, message, onDownloadClick }) => {
   );
 };
 
-const GenerateSecretModal = () => {
+const GenerateSecretModal = ({ setCurrentPublicDataSecret }) => {
   const [firstModalIsOpen, setFirstModalIsOpen] = useState(false);
   const [secondModalIsOpen, setSecondModalIsOpen] = useState(false);
+  const [responseStatus, setResponseStatus] = useState(false);
   const [message, setMessage] = useState("");
   const [totalPeople, setTotalPeople] = useState("");
   const [requiredPeople, setRequiredPeople] = useState("");
@@ -111,6 +129,15 @@ const GenerateSecretModal = () => {
       if (required > total) {
         closeFirstModal();
         setMessage("Total people must be greater than the required people");
+        setResponseStatus(false);
+        setSecondModalIsOpen(true);
+        return;
+      }
+
+      if (required === 0 || total === 0) {
+        closeFirstModal();
+        setResponseStatus(false);
+        setMessage("Total people and required people must be greater than 0");
         setSecondModalIsOpen(true);
         return;
       }
@@ -120,11 +147,18 @@ const GenerateSecretModal = () => {
 
       if (response.ok) {
         closeFirstModal();
+        setResponseStatus(true);
+        console.log(responseStatus);
         setMessage("Secret generated successfully!");
         setSecondModalIsOpen(true);
+        setCurrentPublicDataSecret({
+          requiredPeople: required,
+          totalPeople: total,
+        });
       } else {
         // La llamada a la API falló
         closeFirstModal();
+        setResponseStatus(false);
         setMessage(
           "There was some problem generating the secret, please try again"
         );
@@ -133,6 +167,7 @@ const GenerateSecretModal = () => {
       }
     } catch (error) {
       // Manejar el error de la llamada a la API
+      setResponseStatus(false);
       console.error(error);
       // Mostrar un mensaje de error al usuario si es necesario
     }
@@ -149,7 +184,7 @@ const GenerateSecretModal = () => {
         variant="primary"
         className="app-button btn-lg"
         onClick={openFirstModal}
-        style={{ width: '200px' }}
+        style={{ width: "200px" }}
       >
         Generate Secret
       </Button>
@@ -157,12 +192,17 @@ const GenerateSecretModal = () => {
         isOpen={firstModalIsOpen}
         onClose={closeFirstModal}
         onSubmit={handleSubmitFirstModal}
+        totalPeople={totalPeople}
+        setTotalPeople={setTotalPeople}
+        requiredPeople={requiredPeople}
+        setRequiredPeople={setRequiredPeople}
       />
       <SecondModal
         isOpen={secondModalIsOpen}
         onClose={closeSecondModal}
         message={message}
         onDownloadClick={handleSubmitDownloadShares}
+        responseStatus={responseStatus}
       />
     </div>
   );

@@ -5,6 +5,7 @@ import { useDrop } from "react-dnd";
 import { NativeTypes } from "react-dnd-html5-backend";
 import { FileList } from "./FileList";
 import { httpCheckSecret } from "./requests";
+import ScatterPlot from "./ScatterPlot";
 
 Modal.setAppElement("#root");
 
@@ -63,7 +64,7 @@ export const TargetBox = (props) => {
   const isActive = canDrop && isOver;
   return (
     <div ref={drop} style={style}>
-      {isActive ? "Release to drop" : "Drag file here"}
+      {isActive ? "Release to drop" : "Drag excel file here"}
     </div>
   );
 };
@@ -97,10 +98,20 @@ const FirstModal = ({
   );
 };
 
-const SecondModal = ({ isOpen, onClose, message, onDownloadClick }) => {
+const SecondModal = ({ isOpen, onClose, message, plotData }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customModalStyles}>
-      <p className="fs-4">{message}</p>
+      {plotData.length > 0 ? (
+        <div>
+          <p className="fs-4 text-center">
+            Secret decoded successfully!!! <br />
+            Its value is f(0)={Number(message).toLocaleString()}
+          </p>
+          <ScatterPlot plotData={plotData} />
+        </div>
+      ) : (
+        <p className="fs-4 text-center">{message}</p>
+      )}
 
       <Button className="col-12 fs-5 mt-4" onClick={onClose}>
         Close
@@ -113,6 +124,7 @@ const DecodeSecretModal = () => {
   const [firstModalIsOpen, setFirstModalIsOpen] = useState(false);
   const [secondModalIsOpen, setSecondModalIsOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [plotData, setPlotData] = useState([]);
 
   const openFirstModal = () => {
     setFirstModalIsOpen(true);
@@ -125,31 +137,32 @@ const DecodeSecretModal = () => {
   const closeSecondModal = () => {
     setSecondModalIsOpen(false);
     setMessage("");
+    setPlotData([]);
   };
 
   const [droppedFiles, setDroppedFiles] = useState([]);
 
   const handleSubmitCheckSecret = async () => {
-    const response = await httpCheckSecret(droppedFiles);
-
-    console.log(response)
     try {
+      const response = await httpCheckSecret(droppedFiles);
       if (response.ok) {
         closeFirstModal();
         setMessage(response.data["message"]);
         setSecondModalIsOpen(true);
+        setDroppedFiles([]);
+        setPlotData(response.data.plotData);
       } else {
         closeFirstModal();
         setMessage(
           "There was some problem decoding the secret, please try again"
         );
         setSecondModalIsOpen(true);
-        throw new Error("Error")
+        setDroppedFiles([]);
+        throw new Error("Error");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
   };
 
   return (
@@ -173,6 +186,7 @@ const DecodeSecretModal = () => {
         isOpen={secondModalIsOpen}
         onClose={closeSecondModal}
         message={message}
+        plotData={plotData}
       />
     </div>
   );

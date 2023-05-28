@@ -50,18 +50,27 @@ async function checkSecretWithExcelShares(secret, filePath, p) {
 
     const points = rows.filter((_, i) => i !== 0);
     const poly = lagrangeInterpolation(points, p);
+    const plotData = [];
 
     if (poly.coeff["0"] === secret.polySecret[0]) {
-      console.log("BUENA!!! Descrifrado!!!");
+      console.log("GOOD!!! Unlocked!!!");
+
+      plotData.push({ x: 0, y: Number(secret.polySecret[0]) });
+
+      for (point in secret.shares) {
+        plotData.push({ x: Number(point), y: Number(secret.shares[point]) });
+      }
 
       return {
         decoded: true,
         value: poly.coeff["0"],
+        plotData,
       };
     } else {
       return {
         decoded: false,
         value: undefined,
+        plotData,
       };
     }
   } catch (error) {

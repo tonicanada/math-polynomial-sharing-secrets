@@ -45,16 +45,29 @@ async function httpCheckSecret(droppedFiles) {
       },
     });
 
-    console.log(response.status)
-    response['ok'] = true
+    console.log(response.status);
+    response["ok"] = true;
 
     return response;
   } catch (error) {
-    console.log("HHHH", error)
     return {
       ok: false,
     };
   }
 }
 
-export { httpGenerateSecret, httpDownloadShares, httpCheckSecret };
+async function httpGetPublicDataCurrentSecret() {
+  try {
+    const response = await fetch(`${API_URL}/get-public-data-current-secret`);
+    return await response.json()
+  } catch (error) {
+    console.log("Error fetching the data:", error);
+  }
+}
+
+export {
+  httpGenerateSecret,
+  httpDownloadShares,
+  httpCheckSecret,
+  httpGetPublicDataCurrentSecret,
+};

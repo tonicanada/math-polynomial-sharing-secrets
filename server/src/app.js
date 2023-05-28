@@ -124,29 +124,41 @@ app.post("/check-secret", upload.single("file"), async (req, res) => {
 
     if (check.decoded) {
       res.status(200).json({
-        message: `Secret decoded successfully!!!\n Secret value is ${check.value}`,
+        message: `${check.value}`,
+        plotData: check.plotData,
       });
     } else {
       res.status(200).json({
         message: "Secret decryption was not successful",
+        plotData: check.plotData,
       });
     }
   } catch (error) {
-    console.log(error, "JJJJ")
     console.log(error.message);
     if (error.message === "Wrong header") {
       res.status(500).send(error.message);
     } else if (error.message === "Wrong number of people required") {
       res.status(500).send(error.message);
+    } else {
+      res.status(500).send(error.message);
     }
   }
 
-  fs.unlink(req.file.path, (error) => {
-    if (error) {
-      console.error("Error deleting file:", error);
-    } else {
-      console.log("File deleted successfully");
-    }
+  if (req.file) {
+    fs.unlink(req.file.path, (error) => {
+      if (error) {
+        console.error("Error deleting file:", error);
+      } else {
+        console.log("File deleted successfully");
+      }
+    });
+  }
+});
+
+app.get("/get-public-data-current-secret", async (req, res) => {
+  res.send({
+    requiredPeople: secret.requiredPeople,
+    totalPeople: secret.totalPeople,
   });
 });
 
