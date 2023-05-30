@@ -1,7 +1,7 @@
 import { saveAs } from "file-saver";
 import axios from "axios";
 
-const API_URL = "";
+const API_URL = "http://localhost:8000";
 
 // Generate a secret
 async function httpGenerateSecret(totalPeople, requiredPeople) {
