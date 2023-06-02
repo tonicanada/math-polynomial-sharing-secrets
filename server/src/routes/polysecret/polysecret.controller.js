@@ -10,7 +10,7 @@ const fs = require("fs");
 const {
   generateExcelWithShares,
   checkSecretWithExcelShares,
-} = require("../../excelFunctions");
+} = require("./polysecret.excelfunctions.");
 
 const prime = findNextPrime(secret.totalPeople, secretSize);
 

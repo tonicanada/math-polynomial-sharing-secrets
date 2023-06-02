@@ -60,7 +60,6 @@ const extendedEuclidean = (a, b) => {
   return [gcd, x, y];
 };
 
-extendedEuclidean(2003, 20);
 
 const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
