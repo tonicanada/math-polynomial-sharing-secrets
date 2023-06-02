@@ -2,9 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
 const bodyParser = require("body-parser");
-const secret = require("./routes/polysecret/secret.json");
 const cors = require("cors");
-const { secretSize } = require("../config");
 
 const api = require("./routes/api");
 
