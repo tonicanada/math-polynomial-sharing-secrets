@@ -4,7 +4,7 @@ const { lagrangeInterpolation } = require("./polyFunctions");
 const { secretSize } = require("../config");
 const fs = require("fs");
 
-async function generateExcelWithShares(secret) {
+async function generateExcelWithShares(secret, filePath) {
   const headeRow = [
     {
       value: "Person Id",
@@ -33,9 +33,13 @@ async function generateExcelWithShares(secret) {
 
   const data = [headeRow, ...contentRows];
 
-  const buffer = await writeXlsxFile(data, {
-    filePath: "./temp/secret-shares.xlsx",
-  });
+  try {
+    const buffer = await writeXlsxFile(data, { filePath });
+    // Resto del código
+  } catch (error) {
+    console.error("Error al generar el archivo Excel:", error);
+    // Manejo del error (enviar respuesta de error, etc.)
+  }
 }
 
 async function checkSecretWithExcelShares(secret, filePath, p) {

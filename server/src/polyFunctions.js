@@ -1,6 +1,6 @@
 const Polynomial = require("polynomial");
 const { secretSize } = require("../config");
-const { totalPeople } = require("./secret.json");
+const { totalPeople } = require("./routes/polysecret/secret.json");
 const { findNextPrime, modDivide, getRandomNumber } = require("./utils");
 
 Polynomial.setField(`Z${findNextPrime(totalPeople, secretSize)}`);

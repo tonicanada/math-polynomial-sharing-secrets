@@ -24,6 +24,17 @@ body {
   justify-content: space-between;
 }
 
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
 
 h1 {
   text-align: center;
@@ -35,11 +46,6 @@ h2 {
   text-align: center;
 }
 
-
-.modal-container {
-  margin: 20px;
-}
-
 .app-title {
   color: #fff;
   text-align: center;
@@ -49,7 +55,6 @@ h2 {
   margin-bottom: 30px;
 }
 
-
 .paragraph {
   width: 800px;
   margin-top: 20px;
@@ -57,9 +62,8 @@ h2 {
 }
 
 .paragraph a {
-  color:white
+  color: white;
 }
-
 
 .paragraph a:hover {
   color: yellow; /* Cambia el color al pasar el cursor sobre el enlace */
@@ -70,12 +74,34 @@ h2 {
   width: 780px;
 }
 
-.btn-lg {
-  width: 200px;
-}
-
 .upload-text {
   width: 450px;
   margin: 0 auto;
   text-align: center;
+}
+
+.btn-login {
+  display: flex;
+  justify-content: flex-end; /* Reemplaza justify-content: flex-end; */
+  align-items: center;
+  width: 100%;
+}
+
+.modal-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn-login a {
+  width: 150px;
+}
+
+.app-button {
+  width: 180px;
+  font-size: 18px;
+}
+
+.btn-login a:last-child {
+  margin-left: 10px; /* Agrega margen a la izquierda del segundo botón */
 }

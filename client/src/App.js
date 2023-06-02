@@ -21,6 +21,16 @@ const App = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
+      <div className="header">
+        <div className="btn-login">
+          <a className="btn btn-primary app-button col-6" href="/auth/google">
+            Google Login
+          </a>
+          <a className="btn btn-secondary app-button col-6" href="/auth/logout">
+            Sign Out
+          </a>
+        </div>
+      </div>
       <div className="app-container">
         <h1 className="app-title">
           Sharing a Secret with Polynomial Interpolation
@@ -66,7 +76,7 @@ const App = () => {
             </p>
           )}
         </div>
-        <div className="btns-container">
+        <div className="modal-container">
           <GenerateSecretModal
             setCurrentPublicDataSecret={setCurrentPublicDataSecret}
           />

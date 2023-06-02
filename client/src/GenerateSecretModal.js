@@ -181,7 +181,7 @@ const GenerateSecretModal = ({ setCurrentPublicDataSecret }) => {
     <div className="modal-container">
       <Button
         variant="primary"
-        className="app-button btn-lg"
+        className="btn btn-primary app-button"
         onClick={openFirstModal}
       >
         Generate Secret
