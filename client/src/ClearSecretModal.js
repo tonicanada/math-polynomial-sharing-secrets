@@ -66,7 +66,7 @@ const ClearSecretModal = ({ setCurrentPublicDataSecret }) => {
       const response = await httpClearSecret();
       if (response.ok) {
         closeFirstModal();
-        setMessage("Secret generated successfully!");
+        setMessage("Secret cleared successfully!");
         setSecondModalIsOpen(true);
         setCurrentPublicDataSecret({})
       } else {

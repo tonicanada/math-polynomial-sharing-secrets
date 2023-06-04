@@ -1,6 +1,5 @@
 const Polynomial = require("polynomial");
 const { secretSize } = require("../../../config");
-const { totalPeople } = require("./secret.json");
 
 // Function that checks if a number is prime
 const isPrime = (number) => {
@@ -19,19 +18,21 @@ const isPrime = (number) => {
 
 // Function that returns the next prime number greater than the maximum
 // of two given numbers.
-const findNextPrime = (num1, num2) => {
-  let greaterNumber = Math.max(num1, num2);
-  greaterNumber++;
-
-  while (true) {
-    if (isPrime(greaterNumber)) {
-      return greaterNumber;
+const findNextPrime = (num) => {
+  if (isPrime(num)) {
+    return num;
+  } else {
+    let next = num + 1;
+    while (true) {
+      if (isPrime(next)) {
+        return next;
+      }
+      next++;
     }
-    greaterNumber++;
   }
 };
 
-Polynomial.setField(`Z${findNextPrime(totalPeople, secretSize)}`);
+Polynomial.setField(`Z${findNextPrime(secretSize)}`);
 
 const modDivide = (numerator, denominator, p) => {
   const denominatorModP = ((denominator % p) + p) % p; // Asegura que el denominador esté en el rango [0, p-1]
@@ -59,7 +60,6 @@ const extendedEuclidean = (a, b) => {
   const y = x1 - Math.floor(a / b) * y1;
   return [gcd, x, y];
 };
-
 
 const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -113,5 +113,5 @@ module.exports = {
   generateRandomPolynomial,
   findNextPrime,
   modDivide,
-  getRandomNumber
+  getRandomNumber,
 };

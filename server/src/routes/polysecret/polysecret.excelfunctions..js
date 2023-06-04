@@ -1,10 +1,9 @@
 const writeXlsxFile = require("write-excel-file/node");
 const readXlsxFile = require("read-excel-file/node");
 const { lagrangeInterpolation } = require("./polysecret.utils");
-const { secretSize } = require("../../../config");
 const fs = require("fs");
 
-async function generateExcelWithShares(secret, filePath) {
+async function generateExcelWithShares(secret) {
   const headeRow = [
     {
       value: "Person Id",

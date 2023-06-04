@@ -1,6 +1,5 @@
 const express = require("express");
 const {
-  httpGetPolySecret,
   httpGenerateSecret,
   httpBuildPolySecret,
   httpClearSecret,
@@ -20,10 +19,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const polysecretRouter = express.Router();
-
-// Route that reads the secret polynomial stored in secret.json
-// and returns it as string (an*x^n + an-1*x^n-1 + ... +a0)
-polysecretRouter.get("/get-poly", httpGetPolySecret);
 
 // Route that generates a secret polynomial given the total people (totalPeople)
 // and the people required to rebuild it (requiredPeople). Data is stored in secret.json file.

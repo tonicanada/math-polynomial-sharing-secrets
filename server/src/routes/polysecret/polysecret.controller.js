@@ -4,23 +4,15 @@ const {
   generateRandomPolynomial,
   findNextPrime,
 } = require("./polysecret.utils");
-const secret = require("./secret.json");
 const { secretSize } = require("../../../config");
 const fs = require("fs");
 const {
   generateExcelWithShares,
   checkSecretWithExcelShares,
 } = require("./polysecret.excelfunctions.");
-const User = require("../../models/users.mongo");
 const Secret = require("../../models/secrets.mongo");
 
-const prime = findNextPrime(secret.totalPeople, secretSize);
-
-const httpGetPolySecret = (req, res) => {
-  const poly = new Polynomial(secret.polySecret);
-  res.send(poly.toString());
-  return res.status(200);
-};
+const prime = findNextPrime(secretSize);
 
 const httpGenerateSecret = async (req, res) => {
   try {
@@ -75,25 +67,24 @@ const httpClearSecret = (req, res) => {
   const totalPeople = null;
   const requiredPeople = null;
   const shares = {};
-  const jsonData = { polySecret, totalPeople, requiredPeople, shares };
-  fs.writeFile(
-    "./src/routes/polysecret/secret.json",
-    JSON.stringify(jsonData),
-    (err) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send("Error clearing secret");
-      } else {
-        res.status(200).send("Secret cleared successfully");
-      }
-    }
+
+  const currentUser = req.user;
+  Secret.findOneAndUpdate(
+    { userId: req.user._id },
+    {
+      polySecret,
+      totalPeople,
+      requiredPeople,
+      shares,
+    },
+    { upsert: true, new: true }
   );
+  res.status(200).send("Secret cleared successfully");
 };
 
 const httpDownloadShares = async (req, res) => {
   try {
     const currentUser = req.user;
-
     const secret = await Secret.findOne({ userId: currentUser._id });
 
     if (!secret) {
@@ -119,7 +110,9 @@ const httpDownloadShares = async (req, res) => {
 
 const httpCheckSecret = async (req, res) => {
   try {
-    console.log(req.file);
+    const currentUser = req.user;
+    const secret = await Secret.findOne({ userId: currentUser._id });
+
     const check = await checkSecretWithExcelShares(
       secret,
       req.file.path,
@@ -173,7 +166,6 @@ const httpGetPublicDataCurrentSecret = async (req, res) => {
 };
 
 module.exports = {
-  httpGetPolySecret,
   httpGenerateSecret,
   httpBuildPolySecret,
   httpClearSecret,
