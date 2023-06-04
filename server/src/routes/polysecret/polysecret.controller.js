@@ -11,6 +11,8 @@ const {
   generateExcelWithShares,
   checkSecretWithExcelShares,
 } = require("./polysecret.excelfunctions.");
+const User = require("../../models/users.mongo");
+const Secret = require("../../models/secrets.mongo");
 
 const prime = findNextPrime(secret.totalPeople, secretSize);
 
@@ -20,34 +22,38 @@ const httpGetPolySecret = (req, res) => {
   return res.status(200);
 };
 
-const httpGenerateSecret = (req, res) => {
-  const { totalPeople, requiredPeople } = req.body;
+const httpGenerateSecret = async (req, res) => {
+  try {
+    const { totalPeople, requiredPeople } = req.body;
 
-  const poly = generateRandomPolynomial(requiredPeople, 0, prime);
-  const polySecret = new Array(requiredPeople).fill(0);
+    const poly = generateRandomPolynomial(requiredPeople, 0, prime);
+    const polySecret = new Array(requiredPeople).fill(0);
 
-  for (let key in poly.coeff) {
-    polySecret[key] = poly.coeff[key];
-  }
-
-  const shares = {};
-  for (let i = 0; i < totalPeople; i++) {
-    shares[i + 1] = poly.eval(i + 1);
-  }
-
-  const jsonData = { polySecret, totalPeople, requiredPeople, shares };
-  fs.writeFile(
-    "./src/routes/polysecret/secret.json",
-    JSON.stringify(jsonData),
-    (err) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error saving the file");
-      } else {
-        res.status(200).send("Secret saved successfully");
-      }
+    for (let key in poly.coeff) {
+      polySecret[key] = poly.coeff[key];
     }
-  );
+
+    const shares = {};
+    for (let i = 0; i < totalPeople; i++) {
+      shares[i + 1] = poly.eval(i + 1);
+    }
+
+    await Secret.findOneAndUpdate(
+      { userId: req.user._id },
+      {
+        polySecret,
+        totalPeople,
+        requiredPeople,
+        shares,
+      },
+      { upsert: true, new: true }
+    );
+
+    res.status(200).send("Secret saved successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error saving the secret");
+  }
 };
 
 const httpBuildPolySecret = (req, res) => {
@@ -70,29 +76,41 @@ const httpClearSecret = (req, res) => {
   const requiredPeople = null;
   const shares = {};
   const jsonData = { polySecret, totalPeople, requiredPeople, shares };
-  fs.writeFile("./src/secret.json", JSON.stringify(jsonData), (err) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("Error clearing secret");
-    } else {
-      res.status(200).send("Secret cleared successfully");
+  fs.writeFile(
+    "./src/routes/polysecret/secret.json",
+    JSON.stringify(jsonData),
+    (err) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Error clearing secret");
+      } else {
+        res.status(200).send("Secret cleared successfully");
+      }
     }
-  });
+  );
 };
 
 const httpDownloadShares = async (req, res) => {
   try {
+    const currentUser = req.user;
+
+    const secret = await Secret.findOne({ userId: currentUser._id });
+
+    if (!secret) {
+      console.error("No secret found for the user.");
+      res.status(404).send("No secret found for the user.");
+      return;
+    }
+
     filePath = "./temp/secret-shares.xlsx";
-    await generateExcelWithShares(secret, filePath);
-    res.download(filePath, (err) => {
-      if (err) {
-        console.log(err);
-        console.error("Error downloading file.");
-        res.status(500).send("Error downloading file.");
-      } else {
-        res.status(200);
-      }
-    });
+
+    const buffer = await generateExcelWithShares(secret);
+    res.set("Content-Disposition", 'attachment; filename="secret-shares.xlsx"');
+    res.set(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.send(buffer);
   } catch (error) {
     console.error("Error generating Excel with shares.", error);
     res.status(500).send("Error generating Excel with shares");
@@ -142,10 +160,16 @@ const httpCheckSecret = async (req, res) => {
 };
 
 const httpGetPublicDataCurrentSecret = async (req, res) => {
-  res.send({
-    requiredPeople: secret.requiredPeople,
-    totalPeople: secret.totalPeople,
-  });
+  try {
+    const currentUser = req.user;
+    const userSecret = await Secret.findOne({ userId: currentUser._id });
+    res.send({
+      requiredPeople: userSecret.requiredPeople,
+      totalPeople: userSecret.totalPeople,
+    });
+  } catch (error) {
+    console.log("Error fetching the data:", error);
+  }
 };
 
 module.exports = {
@@ -155,5 +179,5 @@ module.exports = {
   httpClearSecret,
   httpDownloadShares,
   httpCheckSecret,
-  httpGetPublicDataCurrentSecret
+  httpGetPublicDataCurrentSecret,
 };

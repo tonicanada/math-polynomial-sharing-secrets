@@ -3,6 +3,21 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000";
 
+const httpGetUser = async () => {
+  try {
+    const response = await fetch("/get-user"); // Cambia la URL según la configuración de tu servidor
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Failed to get user data");
+    }
+  } catch (error) {
+    throw new Error("Failed to get user data: " + error.message);
+  }
+};
+
+
 // Generate a secret
 async function httpGenerateSecret(totalPeople, requiredPeople) {
   try {
@@ -79,9 +94,10 @@ async function httpClearSecret() {
 }
 
 export {
+  httpGetUser,
   httpGenerateSecret,
   httpDownloadShares,
   httpCheckSecret,
   httpGetPublicDataCurrentSecret,
-  httpClearSecret
+  httpClearSecret,
 };

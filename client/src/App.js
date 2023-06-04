@@ -5,17 +5,33 @@ import DecodeSecretModal from "./DecodeSecretModal";
 import ClearSecretModal from "./ClearSecretModal";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { httpGetPublicDataCurrentSecret } from "./requests";
+import { httpGetUser, httpGetPublicDataCurrentSecret } from "./requests";
 
 const App = () => {
+  const [user, setUser] = useState(null);
   const [currentPublicDataSecret, setCurrentPublicDataSecret] = useState({});
+
+  const fetchUserData = async () => {
+    try {
+      const response = await httpGetUser();
+      if (response) {
+        setUser(response); // Almacenar los datos del usuario en el estado
+      } else {
+        setUser(null); // No hay datos de usuario, el usuario no está autenticado
+      }
+    } catch (error) {
+      console.log("Error fetching user data:", error);
+    }
+  };
 
   const fetchPublicDataCurrentSecret = async () => {
     const data = await httpGetPublicDataCurrentSecret();
+    console.log("AQUI", data)
     setCurrentPublicDataSecret(data);
   };
 
   useEffect(() => {
+    fetchUserData();
     fetchPublicDataCurrentSecret();
   }, []);
 
@@ -57,25 +73,33 @@ const App = () => {
             (MIT) and published in Communications of the ACM, November 1979,
             Volume 22, Number 11.
           </p>
-        </div>
-        <div className="paragraph text-center border p-3 current-secret">
-          <p>Current Secret Info:</p>
-          {currentPublicDataSecret.totalPeople ? (
-            <p>
-              The current secret requires the code of{" "}
-              {currentPublicDataSecret.requiredPeople} people to be discovered.
-              <br /> There are a total of {
-                currentPublicDataSecret.totalPeople
-              }{" "}
-              people with codes (shares).
-            </p>
+          {user ? (
+            <div>
+              Hello, {user.name}!
+              <div className="paragraph text-center border p-3 current-secret">
+                <p>Current Secret Info:</p>
+                {currentPublicDataSecret.totalPeople ? (
+                  <p>
+                    The current secret requires the code of{" "}
+                    {currentPublicDataSecret.requiredPeople} people to be
+                    discovered.
+                    <br /> There are a total of{" "}
+                    {currentPublicDataSecret.totalPeople} people with codes
+                    (shares).
+                  </p>
+                ) : (
+                  <p>
+                    There is no current secret, click on "Generate Secret" to
+                    create one.
+                  </p>
+                )}
+              </div>
+            </div>
           ) : (
-            <p>
-              There is no current secret, click on "Generate Secret" to create
-              one.
-            </p>
+            <div>Please Login to be able to generate a secret</div>
           )}
         </div>
+
         <div className="modal-container">
           <GenerateSecretModal
             setCurrentPublicDataSecret={setCurrentPublicDataSecret}

@@ -32,14 +32,9 @@ async function generateExcelWithShares(secret, filePath) {
   }
 
   const data = [headeRow, ...contentRows];
+  const buffer = await writeXlsxFile(data, { buffer: true });
 
-  try {
-    const buffer = await writeXlsxFile(data, { filePath });
-    // Resto del código
-  } catch (error) {
-    console.error("Error al generar el archivo Excel:", error);
-    // Manejo del error (enviar respuesta de error, etc.)
-  }
+  return buffer;
 }
 
 async function checkSecretWithExcelShares(secret, filePath, p) {
