@@ -62,15 +62,15 @@ const httpBuildPolySecret = (req, res) => {
   }
 };
 
-const httpClearSecret = (req, res) => {
+const httpClearSecret = async (req, res) => {
   const polySecret = [];
   const totalPeople = null;
   const requiredPeople = null;
   const shares = {};
 
   const currentUser = req.user;
-  Secret.findOneAndUpdate(
-    { userId: req.user._id },
+  await Secret.findOneAndUpdate(
+    { userId: currentUser._id },
     {
       polySecret,
       totalPeople,

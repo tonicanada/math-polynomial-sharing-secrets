@@ -26,7 +26,7 @@ const App = () => {
 
   const fetchPublicDataCurrentSecret = async () => {
     const data = await httpGetPublicDataCurrentSecret();
-    console.log("AQUI", data)
+    console.log("AQUI", data);
     setCurrentPublicDataSecret(data);
   };
 
@@ -75,18 +75,21 @@ const App = () => {
           </p>
           {user ? (
             <div>
-              Hello, {user.name}!
               <div className="paragraph text-center border p-3 current-secret">
-                <p>Current Secret Info:</p>
+                <p>
+                  Hello, {user.name}! <br /> Current Secret Info:
+                </p>
                 {currentPublicDataSecret.totalPeople ? (
-                  <p>
-                    The current secret requires the code of{" "}
-                    {currentPublicDataSecret.requiredPeople} people to be
-                    discovered.
-                    <br /> There are a total of{" "}
-                    {currentPublicDataSecret.totalPeople} people with codes
-                    (shares).
-                  </p>
+                  <div>
+                    <p>
+                      The current secret requires the code of{" "}
+                      {currentPublicDataSecret.requiredPeople} people to be
+                      discovered.
+                      <br /> There are a total of{" "}
+                      {currentPublicDataSecret.totalPeople} people with codes
+                      (shares).
+                    </p>
+                  </div>
                 ) : (
                   <p>
                     There is no current secret, click on "Generate Secret" to
@@ -94,20 +97,21 @@ const App = () => {
                   </p>
                 )}
               </div>
+              <div className="modal-container">
+                <GenerateSecretModal
+                  setCurrentPublicDataSecret={setCurrentPublicDataSecret}
+                />
+                <DecodeSecretModal />
+                <ClearSecretModal
+                  setCurrentPublicDataSecret={setCurrentPublicDataSecret}
+                />
+              </div>
             </div>
           ) : (
-            <div>Please Login to be able to generate a secret</div>
+            <div>
+              <div>Please Login to be able to generate a secret</div>
+            </div>
           )}
-        </div>
-
-        <div className="modal-container">
-          <GenerateSecretModal
-            setCurrentPublicDataSecret={setCurrentPublicDataSecret}
-          />
-          <DecodeSecretModal />
-          <ClearSecretModal
-            setCurrentPublicDataSecret={setCurrentPublicDataSecret}
-          />
         </div>
       </div>
     </DndProvider>
