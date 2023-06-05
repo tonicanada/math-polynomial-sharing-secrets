@@ -37,7 +37,7 @@ authEndpointsRouter.get("/failure", (req, res) => {
 
 authEndpointsRouter.get("/auth/logout", (req, res) => {
   req.logout();
-  return res.redirect('/')
+  return res.redirect("/");
 });
 
 authEndpointsRouter.get("/get-user", (req, res) => {
@@ -48,4 +48,4 @@ authEndpointsRouter.get("/get-user", (req, res) => {
   }
 });
 
-module.exports = authEndpointsRouter;
+module.exports = { authEndpointsRouter, checkLoggedIn };
