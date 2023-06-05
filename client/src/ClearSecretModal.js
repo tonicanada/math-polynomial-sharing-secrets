@@ -83,7 +83,7 @@ const ClearSecretModal = ({ setCurrentPublicDataSecret }) => {
   };
 
   return (
-    <div className="modal-container">
+    <div>
       <Button
         variant="primary"
         className="btn btn-primary app-button"
