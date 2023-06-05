@@ -89,7 +89,7 @@ const FirstModal = ({
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customModalStyles}>
       <h2 className="mb-4 fs-3">Please enter the data</h2>
-      <div className="upload-text">
+      <div className="fs-6 upload-text">
         <p>
           Please upload an excel with 2 columns: 'Person Id' and 'Share Value'
           with the required shares to decode the secret.

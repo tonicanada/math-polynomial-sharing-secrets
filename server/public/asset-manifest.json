@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.d5496540.css",
-    "main.js": "/static/js/main.76b35c93.js",
+    "main.js": "/static/js/main.d7284c61.js",
     "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
     "static/media/aldebaran-s-qtRF_RxCAo0-unsplash.jpg": "/static/media/aldebaran-s-qtRF_RxCAo0-unsplash.e5801009abf68ae7b59a.jpg",
     "index.html": "/index.html",
     "main.d5496540.css.map": "/static/css/main.d5496540.css.map",
-    "main.76b35c93.js.map": "/static/js/main.76b35c93.js.map",
+    "main.d7284c61.js.map": "/static/js/main.d7284c61.js.map",
     "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d5496540.css",
-    "static/js/main.76b35c93.js"
+    "static/js/main.d7284c61.js"
   ]
 }
