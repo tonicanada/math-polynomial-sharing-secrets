@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import Button from "react-bootstrap/Button";
-import { httpGenerateSecret, httpDownloadShares } from "./requests";
+import { httpGenerateSecret, httpDownloadShares } from "../requests";
 
 Modal.setAppElement("#root");
 
@@ -61,7 +61,7 @@ const FirstModal = ({
           onChange={(e) => setRequiredPeople(e.target.value)}
         />
         <br />
-        <Button type="submit" variant="primary" className="mt-4 fs-5 col-12">
+        <Button type="submit" variant="primary" className="btn btn-dark mt-4 fs-5 col-12">
           Generate Secret!
         </Button>
       </form>
@@ -81,7 +81,7 @@ const SecondModal = ({
       <p className="fs-4">{message}</p>
       {responseStatus ? (
         <Button
-          className="col-12 fs-5 mt-2 btn-secondary"
+          className="btn btn-dark col-12 fs-5 mt-2 btn-secondary"
           onClick={() => {
             onDownloadClick();
             onClose();
@@ -91,7 +91,7 @@ const SecondModal = ({
         </Button>
       ) : null}
 
-      <Button className="col-12 fs-5 mt-4" onClick={onClose}>
+      <Button className="btn btn-dark col-12 fs-5 mt-4" onClick={onClose}>
         Close
       </Button>
     </Modal>
@@ -181,7 +181,7 @@ const GenerateSecretModal = ({ setCurrentPublicDataSecret }) => {
     <div>
       <Button
         variant="primary"
-        className="btn btn-primary app-button"
+        className="btn btn-dark app-button"
         onClick={openFirstModal}
       >
         Generate Secret

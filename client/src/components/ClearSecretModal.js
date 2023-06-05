@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import Button from "react-bootstrap/Button";
-import { httpClearSecret } from "./requests";
+import { httpClearSecret } from "../requests";
 
 Modal.setAppElement("#root");
 
@@ -24,7 +24,7 @@ const FirstModal = ({ isOpen, onClose, onClick }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customModalStyles}>
       <p className="fs-4 text-center">Are you sure to clear the secret?</p>
-      <Button className="col-12 fs-5 mt-4" onClick={onClick}>
+      <Button className="btn btn-dark col-12 fs-5 mt-4" onClick={onClick}>
         Clear
       </Button>
     </Modal>
@@ -36,7 +36,7 @@ const SecondModal = ({ isOpen, onClose, message }) => {
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customModalStyles}>
       <p className="fs-4">{message}</p>
 
-      <Button className="col-12 fs-5 mt-4" onClick={onClose}>
+      <Button className="btn btn-dark col-12 fs-5 mt-4" onClick={onClose}>
         Close
       </Button>
     </Modal>
@@ -86,7 +86,7 @@ const ClearSecretModal = ({ setCurrentPublicDataSecret }) => {
     <div>
       <Button
         variant="primary"
-        className="btn btn-primary app-button"
+        className="btn btn-dark app-button"
         onClick={openFirstModal}
       >
         Clear Secret

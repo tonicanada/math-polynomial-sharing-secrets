@@ -3,9 +3,9 @@ import Modal from "react-modal";
 import Button from "react-bootstrap/Button";
 import { useDrop } from "react-dnd";
 import { NativeTypes } from "react-dnd-html5-backend";
-import { FileList } from "./FileList";
-import { httpCheckSecret } from "./requests";
-import ScatterPlot from "./ScatterPlot";
+import { FileList } from "../FileList";
+import { httpCheckSecret } from "../requests";
+import ScatterPlot from "../ScatterPlot";
 
 Modal.setAppElement("#root");
 
@@ -97,7 +97,7 @@ const FirstModal = ({
       </div>
       <TargetBox onDrop={handleFileDrop} />
       <FileList files={droppedFiles} />
-      <Button className="col-12 fs-5 mt-4" onClick={onClick}>
+      <Button className="btn btn-dark col-12 fs-5 mt-4" onClick={onClick}>
         Check!
       </Button>
     </Modal>
@@ -119,7 +119,7 @@ const SecondModal = ({ isOpen, onClose, message, plotData }) => {
         <p className="fs-4 text-center">{message}</p>
       )}
 
-      <Button className="col-12 fs-5 mt-4" onClick={onClose}>
+      <Button className="btn btn-dark col-12 fs-5 mt-4" onClick={onClose}>
         Close
       </Button>
     </Modal>
@@ -175,7 +175,7 @@ const DecodeSecretModal = () => {
     <div>
       <Button
         variant="primary"
-        className="btn btn-primary app-button"
+        className="btn btn-dark app-button"
         onClick={openFirstModal}
       >
         Decode Secret

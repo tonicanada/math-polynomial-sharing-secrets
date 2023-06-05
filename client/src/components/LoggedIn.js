@@ -1,6 +1,6 @@
-import GenerateSecretModal from "../GenerateSecretModal";
-import DecodeSecretModal from "../DecodeSecretModal";
-import ClearSecretModal from "../ClearSecretModal";
+import GenerateSecretModal from "./GenerateSecretModal";
+import DecodeSecretModal from "./DecodeSecretModal";
+import ClearSecretModal from "./ClearSecretModal";
 
 const LoggedIn = ({
   user,
@@ -10,7 +10,7 @@ const LoggedIn = ({
   return (
     <div>
       <div className="current-secret">
-        <p>Hello, {user.name}!:</p>
+        <p>Hello, {user.name}!</p>
         {currentPublicDataSecret.totalPeople ? (
           <p>
             Your current secret requires the code of{" "}

@@ -2,7 +2,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Merriweather", serif;
+  /* font-family: "Russo One", serif; */
   height: 100vh;
   background-image: url("./assets/aldebaran-s-qtRF_RxCAo0-unsplash.jpg");
   background-size: cover;
@@ -37,6 +37,7 @@ body {
   padding-left: 20px;
   padding-right: 20px;
   box-sizing: border-box;
+  font-size: medium;
 }
 
 .content-container {
@@ -52,6 +53,7 @@ h1 {
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 h2 {
@@ -59,23 +61,24 @@ h2 {
 }
 
 .app-title {
-  color: #fff;
+  color: black;
   text-align: center;
   align-items: center;
   display: flex;
   font-size: 28px;
   margin-bottom: 30px;
+  margin-top: 30px;
 }
 
 .paragraph {
   width: 90%;
   margin-top: 20px;
   margin-bottom: 50px;
-  color: white;
+  color: black;
 }
 
 .paragraph a {
-  color: white;
+  color: black;
 }
 
 .paragraph a:hover {
@@ -83,7 +86,7 @@ h2 {
 }
 
 .current-secret {
-  border: 1px solid white;
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,6 +125,7 @@ h2 {
   width: 150px;
 }
 
+
 .app-button {
   width: 180px;
   font-size: 18px;
@@ -129,6 +133,18 @@ h2 {
 
 .btn-login a:last-child {
   margin-left: 10px; /* Agrega margen a la izquierda del segundo botón */
+}
+
+.card-component {
+  background-color: rgba(44, 204, 232, 0.6);
+  border-radius: 10px;
+  padding: 20px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 @media (max-width: 768px) {
