@@ -61,8 +61,12 @@ const FirstModal = ({
           onChange={(e) => setRequiredPeople(e.target.value)}
         />
         <br />
-        <Button type="submit" variant="primary" className="btn btn-dark mt-4 fs-5 col-12">
-          Generate Secret!
+        <Button
+          type="submit"
+          variant="primary"
+          className="btn btn-dark mt-4 fs-5 col-12"
+        >
+          Generate Secret! (current secret will be overwritten)
         </Button>
       </form>
     </Modal>

@@ -57,6 +57,7 @@ function verifyCallback(accessToken, refreshToken, profile, done) {
         totalPeople: null,
         requiredPeople: null,
         shares: {}, // Leave the secret empty for now
+        isDownloaded: false
       });
 
       // Save the secret to MongoDB

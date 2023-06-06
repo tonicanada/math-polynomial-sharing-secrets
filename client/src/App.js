@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Paragraph from "./components/Paragraph";
 import LoggedIn from "./components/LoggedIn";
 import { DndProvider } from "react-dnd";
@@ -52,11 +53,12 @@ const App = () => {
               />
             ) : (
               <div>
-                <div>Please Login to be able to generate a secret</div>
+                <div>Please Login to be able to generate a secret.</div>
               </div>
             )}
           </div>
         </div>
+        <Footer />
       </div>
     </DndProvider>
   );

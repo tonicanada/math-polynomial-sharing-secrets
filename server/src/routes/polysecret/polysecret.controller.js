@@ -37,6 +37,7 @@ const httpGenerateSecret = async (req, res) => {
         totalPeople,
         requiredPeople,
         shares,
+        isDownloaded: false,
       },
       { upsert: true, new: true }
     );
@@ -67,6 +68,7 @@ const httpClearSecret = async (req, res) => {
   const totalPeople = null;
   const requiredPeople = null;
   const shares = {};
+  const isDownloaded = false;
 
   const currentUser = req.user;
   await Secret.findOneAndUpdate(
@@ -76,6 +78,7 @@ const httpClearSecret = async (req, res) => {
       totalPeople,
       requiredPeople,
       shares,
+      isDownloaded,
     },
     { upsert: true, new: true }
   );
@@ -93,9 +96,17 @@ const httpDownloadShares = async (req, res) => {
       return;
     }
 
+    if (secret.isDownloaded) {
+      console.error("Excel can only be downloaded once");
+      res.status(409).send("Excel can only be downloaded once");
+      return;
+    }
+
     filePath = "./temp/secret-shares.xlsx";
 
     const buffer = await generateExcelWithShares(secret);
+
+    await Secret.findOneAndUpdate({ _id: secret._id }, { isDownloaded: true });
     res.set("Content-Disposition", 'attachment; filename="secret-shares.xlsx"');
     res.set(
       "Content-Type",
