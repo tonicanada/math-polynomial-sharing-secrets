@@ -5,7 +5,7 @@ const API_URL = "http://localhost:8000";
 
 const httpGetUser = async () => {
   try {
-    const response = await fetch("/get-user"); // Cambia la URL según la configuración de tu servidor
+    const response = await fetch(`${API_URL}/get-user`); // Cambia la URL según la configuración de tu servidor
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -16,7 +16,6 @@ const httpGetUser = async () => {
     throw new Error("Failed to get user data: " + error.message);
   }
 };
-
 
 // Generate a secret
 async function httpGenerateSecret(totalPeople, requiredPeople) {

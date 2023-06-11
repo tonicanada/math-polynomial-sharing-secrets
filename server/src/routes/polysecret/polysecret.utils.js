@@ -84,7 +84,7 @@ const lagrangeInterpolation = (points, p) => {
 
     for (let j = 0; j < points.length; j++) {
       if (i !== j) {
-        const term = new Polynomial([-points[j][0], 1], p).mul(
+        const term = new Polynomial([-points[j][0], 1]).mul(
           modDivide(1, points[i][0] - points[j][0], p)
         );
         baseProd = baseProd.mul(term);

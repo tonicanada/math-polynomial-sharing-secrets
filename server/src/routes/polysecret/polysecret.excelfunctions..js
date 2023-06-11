@@ -46,7 +46,7 @@ async function checkSecretWithExcelShares(secret, filePath, p) {
       throw new Error("Wrong number of people required");
     }
 
-    const points = rows.filter((_, i) => i !== 0);
+    const points = rows.filter((_, i) => i !== 0); // Drops header row
     const poly = lagrangeInterpolation(points, p);
     const plotData = [];
 
