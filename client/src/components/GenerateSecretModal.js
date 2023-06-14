@@ -149,6 +149,8 @@ const GenerateSecretModal = ({ setCurrentPublicDataSecret }) => {
       // Call API
       const response = await httpGenerateSecret(total, required);
 
+      console.log(response)
+
       if (response.ok) {
         closeFirstModal();
         setResponseStatus(true);

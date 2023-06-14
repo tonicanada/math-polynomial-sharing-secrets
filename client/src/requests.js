@@ -92,6 +92,75 @@ async function httpClearSecret() {
   }
 }
 
+const httpPlotPolyLagrangeFieldReal = async (pointsArray) => {
+  try {
+    const response = await fetch(`${API_URL}/plot-poly-lagrange-real`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(pointsArray),
+    });
+    return await response.json();
+  } catch (error) {
+    return {
+      ok: false,
+    };
+  }
+};
+
+const httpPlotPolyNewtonFieldReal = async (pointsArray) => {
+  try {
+    const response = await fetch(`${API_URL}/plot-poly-newton-real`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(pointsArray),
+    });
+    console.log(response)
+    return await response.json();
+  } catch (error) {
+    return {
+      ok: false,
+    };
+  }
+};
+
+const httpPlotPolyLagrangeFieldModP = async (pointsArray, p) => {
+  try {
+    const response = await fetch(`${API_URL}/plot-poly-lagrange-mod-p`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ pointsArray, p }),
+    });
+    return await response.json();
+  } catch (error) {
+    return {
+      ok: false,
+    };
+  }
+};
+
+const httpPlotPolyNewtonFieldModP = async (pointsArray, p) => {
+  try {
+    const response = await fetch(`${API_URL}/plot-poly-newton-mod-p`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ pointsArray, p }),
+    });
+    return await response.json();
+  } catch (error) {
+    return {
+      ok: false,
+    };
+  }
+};
+
 export {
   httpGetUser,
   httpGenerateSecret,
@@ -99,4 +168,8 @@ export {
   httpCheckSecret,
   httpGetPublicDataCurrentSecret,
   httpClearSecret,
+  httpPlotPolyLagrangeFieldReal,
+  httpPlotPolyNewtonFieldReal,
+  httpPlotPolyLagrangeFieldModP,
+  httpPlotPolyNewtonFieldModP
 };

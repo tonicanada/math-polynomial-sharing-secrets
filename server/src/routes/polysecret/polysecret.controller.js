@@ -1,9 +1,9 @@
 const Polynomial = require("polynomial");
 const {
-  lagrangeInterpolation,
+  lagrangeInterpolationFieldModP,
   generateRandomPolynomial,
   findNextPrime,
-} = require("./polysecret.utils");
+} = require("../../utils/polynomial.utils");
 const { secretSize } = require("../../../config");
 const fs = require("fs");
 const {
@@ -56,7 +56,7 @@ const httpBuildPolySecret = (req, res) => {
     for (let key in data) {
       points.push([Number(key), data[key]]);
     }
-    const poly = lagrangeInterpolation(points, prime);
+    const poly = lagrangeInterpolationFieldModP(points, prime);
     res.status(200).send(poly);
   } catch (error) {
     res.status(500).send("There was an error building the polynomial");

@@ -12,15 +12,25 @@ Chart.register(PointElement);
 Chart.register(LineElement);
 Chart.register(Filler);
 
-const ScatterPlot = (plotData) => {
+const ScatterPlot = ({ plotData, points }) => {
   const data = {
     datasets: [
       {
+        label: "Points",
+        showLine: false,
+        data: points,
+        fill: true,
+        borderColor: "green",
+        backgroundColor: "green",
+        pointRadius: 5,
+      },
+      {
         label: "Chart 1",
-        data: plotData.plotData,
+        data: plotData,
         showLine: true,
         fill: false,
         borderColor: "rgba(0, 200, 0, 1)",
+        pointRadius: 2,
         cubicInterpolationMode: "monotone",
       },
     ],
@@ -41,10 +51,10 @@ const ScatterPlot = (plotData) => {
 
   const chartStyle = {
     width: "600px",
-    height: "auto"
-  }
+    height: "auto",
+  };
 
-  return <Scatter data={data} options={options} style={chartStyle}/>;
+  return <Scatter data={data} options={options} style={chartStyle} />;
 };
 
 export default ScatterPlot;

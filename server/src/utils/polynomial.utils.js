@@ -1,5 +1,5 @@
 const Polynomial = require("polynomial");
-const { secretSize } = require("../../../config");
+const { secretSize } = require("../../config");
 
 // Function that checks if a number is prime
 const isPrime = (number) => {
@@ -32,7 +32,7 @@ const findNextPrime = (num) => {
   }
 };
 
-Polynomial.setField(`Z${findNextPrime(secretSize)}`);
+// Polynomial.setField(`Z${findNextPrime(secretSize)}`);
 
 const modDivide = (numerator, denominator, p) => {
   const denominatorModP = ((denominator % p) + p) % p; // Asegura que el denominador esté en el rango [0, p-1]
@@ -76,7 +76,8 @@ const getRandomNumber = (min, max) => {
 //   [33, 5969703]
 // ]
 // prime = 33554467
-const lagrangeInterpolation = (points, p) => {
+const lagrangeInterpolationFieldModP = (points, p) => {
+  Polynomial.setField(`Z${p}`)
   let baseSum = new Polynomial([0]);
 
   for (let i = 0; i < points.length; i++) {
@@ -96,9 +97,66 @@ const lagrangeInterpolation = (points, p) => {
   return baseSum;
 };
 
+const lagrangeInterpolationFieldReal = (points) => {
+  Polynomial.setField(`R`);
+
+  let baseSum = new Polynomial([0]);
+
+  for (let i = 0; i < points.length; i++) {
+    let baseProd = new Polynomial([1]);
+
+    for (let j = 0; j < points.length; j++) {
+      if (i !== j) {
+        const term = new Polynomial([-points[j][0], 1]).mul(
+          1 / (points[i][0] - points[j][0])
+        );
+        baseProd = baseProd.mul(term);
+      }
+    }
+    baseSum = baseSum.add(baseProd.mul(points[i][1]));
+  }
+
+  return baseSum;
+};
+
+const newtonInterpolationFieldReal = (points) => {
+  Polynomial.setField(`R`);
+
+  const n = points.length;
+  const a = new Array(n);
+
+  const getPkNewton = (k, memo) => {
+    // Base case
+    if (k === 0) {
+      return new Polynomial([points[0][1]]);
+    }
+
+    // Check if result is in memo
+    if (memo[k]) {
+      return memo[k];
+    }
+    let c = 1;
+    let p = new Polynomial([1]);
+    for (let i = 0; i < k; i++) {
+      c *= points[k][0] - points[i][0];
+      p = p.mul(new Polynomial([-points[i][0], 1]));
+    }
+    let res = getPkNewton(k - 1, memo).add(
+      new Polynomial([
+        (points[k][1] - getPkNewton(k - 1, memo).eval(points[k][0])) * (1 / c),
+      ]).mul(p)
+    );
+    memo[k] = res;
+    return res;
+  };
+
+  return getPkNewton(n - 1, a);
+};
+
 // Function that generates a random polynomial where all coefficients
 // are 0 except the first and the last one (an*x^n + a0)
 const generateRandomPolynomial = (degree, min, max) => {
+  Polynomial.setField(`Z${findNextPrime(secretSize)}`);
   const coefArray = new Array(degree).fill(0);
   for (let i = 0; i < degree; i++) {
     coefArray[i] = getRandomNumber(min, max);
@@ -109,7 +167,9 @@ const generateRandomPolynomial = (degree, min, max) => {
 };
 
 module.exports = {
-  lagrangeInterpolation,
+  lagrangeInterpolationFieldModP,
+  lagrangeInterpolationFieldReal,
+  newtonInterpolationFieldReal,
   generateRandomPolynomial,
   findNextPrime,
   modDivide,

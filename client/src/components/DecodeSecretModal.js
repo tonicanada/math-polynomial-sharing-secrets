@@ -5,7 +5,7 @@ import { useDrop } from "react-dnd";
 import { NativeTypes } from "react-dnd-html5-backend";
 import { FileList } from "../FileList";
 import { httpCheckSecret } from "../requests";
-import ScatterPlot from "../ScatterPlot";
+import ScatterPlot from "./ScatterPlot";
 
 Modal.setAppElement("#root");
 

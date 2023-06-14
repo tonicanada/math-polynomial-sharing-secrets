@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Paragraph from "./components/Paragraph";
-import LoggedIn from "./components/LoggedIn";
+import MainApp from "./components/MainApp";
+import Playground from "./components/Playground";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { httpGetUser, httpGetPublicDataCurrentSecret } from "./requests";
 
 const App = () => {
@@ -37,29 +38,24 @@ const App = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <Header />
-      <div className="app-container">
-        <div className="card-component">
-          <h1 className="app-title">
-            Sharing a Secret with Polynomial Interpolation
-          </h1>
-          <div className="paragraph text-center mt-100">
-            <Paragraph />
-            {user ? (
-              <LoggedIn
+      <Router>
+        <Header />
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              <MainApp
                 user={user}
                 currentPublicDataSecret={currentPublicDataSecret}
                 setCurrentPublicDataSecret={setCurrentPublicDataSecret}
               />
-            ) : (
-              <div>
-                <div>Please Login to be able to generate a secret.</div>
-              </div>
-            )}
-          </div>
-        </div>
+            }
+          />
+          <Route exact path="/playground" element={<Playground />} />
+        </Routes>
         <Footer />
-      </div>
+      </Router>
     </DndProvider>
   );
 };

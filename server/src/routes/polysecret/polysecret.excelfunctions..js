@@ -1,6 +1,6 @@
 const writeXlsxFile = require("write-excel-file/node");
 const readXlsxFile = require("read-excel-file/node");
-const { lagrangeInterpolation } = require("./polysecret.utils");
+const { lagrangeInterpolationFieldModP } = require("../../utils/polynomial.utils");
 const fs = require("fs");
 
 async function generateExcelWithShares(secret) {
@@ -47,7 +47,7 @@ async function checkSecretWithExcelShares(secret, filePath, p) {
     }
 
     const points = rows.filter((_, i) => i !== 0); // Drops header row
-    const poly = lagrangeInterpolation(points, p);
+    const poly = lagrangeInterpolationFieldModP(points, p);
     const plotData = [];
 
     if (poly.coeff["0"] === secret.polySecret[0]) {

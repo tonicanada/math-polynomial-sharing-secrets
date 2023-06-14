@@ -1,0 +1,85 @@
+.playcard-component {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  height: 100%;
+  width: 800px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 100px;
+}
+
+.plot-container {
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.play-title {
+  color: black;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  font-size: 28px;
+  /* margin-bottom: 30px; */
+  margin-top: 30px;
+}
+
+.back-link {
+  color: black;
+  margin-bottom: 30px;
+}
+
+.card-plot {
+  flex-grow: 1;
+  display: flex;
+  width: 325px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.formula .katex {
+  height: 50px;
+  font-size: 1em !important;
+}
+
+.poly-container .katex {
+  max-width: 100%;
+  font-size: 1em !important;
+}
+
+.poly-message {
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.rounded-rectangle {
+  width: 325px;
+}
+
+.prime-number-input {
+  text-align: center;
+  height: auto;
+}
+
+.plot-title {
+  font-size: 15px;
+  text-align: center;
+}
+
+#primeInput {
+  background-color: #efeeee;
+  pointer-events: none;
+}
+
+.prime-error {
+  font-size: small;
+  color: red;
+}
