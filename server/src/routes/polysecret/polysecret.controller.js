@@ -134,11 +134,13 @@ const httpCheckSecret = async (req, res) => {
       res.status(200).json({
         message: `${check.value}`,
         plotData: check.plotData,
+        points: check.points
       });
     } else {
       res.status(200).json({
         message: "Secret decryption was not successful",
         plotData: check.plotData,
+        points: check.points
       });
     }
   } catch (error) {

@@ -104,16 +104,16 @@ const FirstModal = ({
   );
 };
 
-const SecondModal = ({ isOpen, onClose, message, plotData }) => {
+const SecondModal = ({ isOpen, onClose, message, plotData, points }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customModalStyles}>
       {plotData.length > 0 ? (
-        <div>
+        <div className="d-flex flex-column align-items-center justify-content-center">
           <p className="fs-4 text-center">
-            Secret decoded successfully!!! <br />
-            Its value is f(0)={Number(message).toLocaleString()}
+            Secret decoded successfully!!!
           </p>
-          <ScatterPlot plotData={plotData} />
+          <p className="fs-5 text-center">Its value is f(0)={Number(message).toLocaleString()}</p>
+          <ScatterPlot plotData={plotData} points={points} />
         </div>
       ) : (
         <p className="fs-4 text-center">{message}</p>
@@ -131,6 +131,7 @@ const DecodeSecretModal = () => {
   const [secondModalIsOpen, setSecondModalIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [plotData, setPlotData] = useState([]);
+  const [points, setPoints] = useState([]);
 
   const openFirstModal = () => {
     setFirstModalIsOpen(true);
@@ -144,6 +145,7 @@ const DecodeSecretModal = () => {
     setSecondModalIsOpen(false);
     setMessage("");
     setPlotData([]);
+    setPoints([]);
   };
 
   const [droppedFiles, setDroppedFiles] = useState([]);
@@ -157,6 +159,7 @@ const DecodeSecretModal = () => {
         setSecondModalIsOpen(true);
         setDroppedFiles([]);
         setPlotData(response.data.plotData);
+        setPoints(response.data.points);
       } else {
         closeFirstModal();
         setMessage(
@@ -192,6 +195,7 @@ const DecodeSecretModal = () => {
         onClose={closeSecondModal}
         message={message}
         plotData={plotData}
+        points={points}
       />
     </div>
   );

@@ -118,7 +118,7 @@ const httpPlotPolyNewtonFieldReal = async (pointsArray) => {
       },
       body: JSON.stringify(pointsArray),
     });
-    console.log(response)
+    console.log(response);
     return await response.json();
   } catch (error) {
     return {
@@ -171,5 +171,5 @@ export {
   httpPlotPolyLagrangeFieldReal,
   httpPlotPolyNewtonFieldReal,
   httpPlotPolyLagrangeFieldModP,
-  httpPlotPolyNewtonFieldModP
+  httpPlotPolyNewtonFieldModP,
 };

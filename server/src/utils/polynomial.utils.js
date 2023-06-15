@@ -77,7 +77,7 @@ const getRandomNumber = (min, max) => {
 // ]
 // prime = 33554467
 const lagrangeInterpolationFieldModP = (points, p) => {
-  Polynomial.setField(`Z${p}`)
+  Polynomial.setField(`Z${p}`);
   let baseSum = new Polynomial([0]);
 
   for (let i = 0; i < points.length; i++) {
@@ -153,6 +153,42 @@ const newtonInterpolationFieldReal = (points) => {
   return getPkNewton(n - 1, a);
 };
 
+const newtonInterpolationFieldModP = (points, prime) => {
+  Polynomial.setField(`Z${prime}`);
+
+  const n = points.length;
+  const a = new Array(n);
+
+  const getPkNewton = (k, memo) => {
+    // Base case
+    if (k === 0) {
+      return new Polynomial([points[0][1]]);
+    }
+
+    // Check if result is in memo
+    if (memo[k]) {
+      return memo[k];
+    }
+    let c = 1;
+    let p = new Polynomial([1]);
+    for (let i = 0; i < k; i++) {
+      c *= points[k][0] - points[i][0];
+
+      p = p.mul(new Polynomial([-points[i][0], 1]));
+    }
+    let res = getPkNewton(k - 1, memo).add(
+      new Polynomial([
+        (points[k][1] - getPkNewton(k - 1, memo).eval(points[k][0])) *
+          modDivide(1, c, prime),
+      ]).mul(p)
+    );
+    memo[k] = res;
+    return res;
+  };
+
+  return getPkNewton(n - 1, a);
+};
+
 // Function that generates a random polynomial where all coefficients
 // are 0 except the first and the last one (an*x^n + a0)
 const generateRandomPolynomial = (degree, min, max) => {
@@ -167,9 +203,10 @@ const generateRandomPolynomial = (degree, min, max) => {
 };
 
 module.exports = {
-  lagrangeInterpolationFieldModP,
   lagrangeInterpolationFieldReal,
   newtonInterpolationFieldReal,
+  lagrangeInterpolationFieldModP,
+  newtonInterpolationFieldModP,
   generateRandomPolynomial,
   findNextPrime,
   modDivide,

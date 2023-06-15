@@ -2,6 +2,7 @@ const {
   lagrangeInterpolationFieldReal,
   newtonInterpolationFieldReal,
   lagrangeInterpolationFieldModP,
+  newtonInterpolationFieldModP
 } = require("../../utils/polynomial.utils");
 
 const genLinspace = (start, end, count) => {
@@ -76,8 +77,26 @@ const httpGenerateLagrangeInterpolationFieldModP = async (req, res) => {
   });
 };
 
+const httpGenerateNewtonInterpolationFieldModP = async (req, res) => {
+  const points = req.body.pointsArray.sort((p1, p2) => {
+    return p1[0] - p2[0];
+  });
+  const p = Number(req.body.p);
+  const poly = newtonInterpolationFieldModP(points, p);
+  const linspace = genIntArray(points[points.length - 1][0]);
+  const response = [];
+  for (let i = 0; i < linspace.length; i++) {
+    response.push([linspace[i], poly.eval(linspace[i])]);
+  }
+  res.status(200).json({
+    polyPoints: response,
+    polyString: poly.toString(),
+  });
+};
+
 module.exports = {
   httpGenerateLagrangeInterpolationFieldReal,
   httpGenerateNewtonInterpolationFieldReal,
   httpGenerateLagrangeInterpolationFieldModP,
+  httpGenerateNewtonInterpolationFieldModP
 };

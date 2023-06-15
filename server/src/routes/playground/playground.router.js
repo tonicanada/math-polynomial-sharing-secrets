@@ -3,7 +3,8 @@ const express = require("express");
 const {
   httpGenerateLagrangeInterpolationFieldReal,
   httpGenerateNewtonInterpolationFieldReal,
-  httpGenerateLagrangeInterpolationFieldModP
+  httpGenerateLagrangeInterpolationFieldModP,
+  httpGenerateNewtonInterpolationFieldModP,
 } = require("./playground.controller");
 
 const playgroundRouter = express.Router();
@@ -21,6 +22,11 @@ playgroundRouter.post(
 playgroundRouter.post(
   "/plot-poly-lagrange-mod-p",
   httpGenerateLagrangeInterpolationFieldModP
+);
+
+playgroundRouter.post(
+  "/plot-poly-newton-mod-p",
+  httpGenerateNewtonInterpolationFieldModP
 );
 
 module.exports = { playgroundRouter };

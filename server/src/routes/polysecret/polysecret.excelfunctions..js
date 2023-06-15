@@ -63,12 +63,14 @@ async function checkSecretWithExcelShares(secret, filePath, p) {
         decoded: true,
         value: poly.coeff["0"],
         plotData,
+        points
       };
     } else {
       return {
         decoded: false,
         value: undefined,
         plotData,
+        points
       };
     }
   } catch (error) {

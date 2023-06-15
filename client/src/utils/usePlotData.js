@@ -103,8 +103,6 @@ const usePlotData = () => {
   ) => {
     const regex = /^\[-?\d+,-?\d+\](,\[-?\d+,-?\d+\])*$/;
 
-    console.log(p);
-
     if (!p) {
       setErrorPrime(
         "Please enter a number greater than 1.000 to compute the next prime"
@@ -143,38 +141,48 @@ const usePlotData = () => {
     }
   };
 
-  const handleSubmitPlotNewtonFieldModP = async (inputValue, p) => {
+  const handleSubmitPlotNewtonFieldModP = async (
+    inputValue,
+    p,
+    setErrorPrime
+  ) => {
     const regex = /^\[-?\d+,-?\d+\](,\[-?\d+,-?\d+\])*$/;
 
-    if (regex.test(inputValue)) {
-      const inputPoints = JSON.parse(`[${inputValue}]`);
-      setPoints((prevPoints) => ({
-        ...prevPoints,
-        newtonModP: inputPoints.map((point) => ({
-          x: point[0] % p,
-          y: point[1] % p,
-        })),
-      }));
-      const response = await httpPlotPolyNewtonFieldModP(inputPoints, p);
-      const polyPoints = response.polyPoints.map((p) => {
-        return {
-          x: p[0],
-          y: p[1],
-        };
-      });
-      setPlotData((prevPlotData) => ({
-        ...prevPlotData,
-        newtonModP: polyPoints,
-      }));
-      setBottomMsg((prevBottomMsg) => ({
-        ...prevBottomMsg,
-        newtonModP: response.polyString,
-      }));
+    if (!p) {
+      setErrorPrime(
+        "Please enter a number greater than 1.000 to compute the next prime"
+      );
     } else {
-      setErrorMsg((prevErrorMsg) => ({
-        ...prevErrorMsg,
-        newtonModP: "Wrong format",
-      }));
+      if (regex.test(inputValue)) {
+        const inputPoints = JSON.parse(`[${inputValue}]`);
+        setPoints((prevPoints) => ({
+          ...prevPoints,
+          newtonModP: inputPoints.map((point) => ({
+            x: point[0] % p,
+            y: point[1] % p,
+          })),
+        }));
+        const response = await httpPlotPolyNewtonFieldModP(inputPoints, p);
+        const polyPoints = response.polyPoints.map((p) => {
+          return {
+            x: p[0],
+            y: p[1],
+          };
+        });
+        setPlotData((prevPlotData) => ({
+          ...prevPlotData,
+          newtonModP: polyPoints,
+        }));
+        setBottomMsg((prevBottomMsg) => ({
+          ...prevBottomMsg,
+          newtonModP: response.polyString,
+        }));
+      } else {
+        setErrorMsg((prevErrorMsg) => ({
+          ...prevErrorMsg,
+          newtonModP: "Wrong format",
+        }));
+      }
     }
   };
 

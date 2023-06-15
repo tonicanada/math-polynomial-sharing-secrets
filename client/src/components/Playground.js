@@ -21,7 +21,7 @@ const Playground = () => {
     handleSubmitPlotLagrangeFieldReal,
     handleSubmitPlotNewtonFieldReal,
     handleSubmitPlotLagrangeFieldModP,
-    handleSubmitPlotNewtonFieldMopP,
+    handleSubmitPlotNewtonFieldModP,
   } = usePlotData();
 
   const [inputPrimeValue, setInputPrimeValue] = useState("");
@@ -37,7 +37,7 @@ const Playground = () => {
       setPrime(prime.toString());
     } else {
       setPrime("");
-      setErrorPrime("")
+      setErrorPrime("");
     }
   };
 
@@ -72,7 +72,7 @@ const Playground = () => {
             <CardWithPlot
               plotTitle={
                 <div>
-                  Lagrange Interpolation, Polynomial field:{" "}
+                  Lagrange Interpolation <br /> Polynomial field:{" "}
                   <InlineMath>{`\\Reals`}</InlineMath>
                 </div>
               }
@@ -103,7 +103,7 @@ const Playground = () => {
             <CardWithPlot
               plotTitle={
                 <div>
-                  Newton Interpolation, Polynomial field:{" "}
+                  Newton Interpolation <br /> Polynomial field:{" "}
                   <InlineMath>{`\\Reals`}</InlineMath>
                 </div>
               }
@@ -137,7 +137,7 @@ const Playground = () => {
               type="number"
               id="primeNumberInput"
               className="form-control form-control-sm rounded-left text-end small-input"
-              placeholder="Enter a number than 1000"
+              placeholder="Enter num greater than 1000"
               value={inputPrimeValue}
               onChange={handleInputPrimeChange}
             />
@@ -161,7 +161,7 @@ const Playground = () => {
             <CardWithPlot
               plotTitle={
                 <div>
-                  Lagrange Interpolation, Polynomial field:{" "}
+                  Lagrange Interpolation <br /> Polynomial field:{" "}
                   <InlineMath>
                     {prime ? `\\Z_{${prime}}` : `\\Z_{P}`}
                   </InlineMath>
@@ -177,7 +177,7 @@ const Playground = () => {
                 setPlotData({ ...plotData, lagrangeModP: newPlotData })
               }
               setBottomMsg={(newBottomMsg) =>
-                setBottomMsg({ ...bottomMsg, lagrangeModP: { newBottomMsg } })
+                setBottomMsg({ ...bottomMsg, lagrangeModP: newBottomMsg })
               }
               errorMsg={errorMsg.lagrangeModP}
               setErrorMsg={(newErrorMsg) =>
@@ -188,7 +188,33 @@ const Playground = () => {
               setErrorPrime={setErrorPrime}
             />
           </div>
-          <CardWithPlot />
+          <CardWithPlot
+            plotTitle={
+              <div>
+                Newton Interpolation <br /> Polynomial field:{" "}
+                <InlineMath>{prime ? `\\Z_{${prime}}` : `\\Z_{P}`}</InlineMath>
+              </div>
+            }
+            handleSubmit={handleSubmitPlotNewtonFieldModP}
+            points={points.newtonModP}
+            setPoints={(newPoints) =>
+              setPoints({ ...points, newtonModP: newPoints })
+            }
+            plotData={plotData.newtonModP}
+            setPlotData={(newPlotData) =>
+              setPlotData({ ...plotData, newtonModP: newPlotData })
+            }
+            setBottomMsg={(newBottomMsg) =>
+              setBottomMsg({ ...bottomMsg, newtonModP: newBottomMsg })
+            }
+            errorMsg={errorMsg.newtonModP}
+            setErrorMsg={(newErrorMsg) =>
+              setErrorMsg({ ...errorMsg, newtonModP: newErrorMsg })
+            }
+            bottomMsg={bottomMsg.newtonModP}
+            prime={prime}
+            setErrorPrime={setErrorPrime}
+          />
         </div>
       </div>
     </div>
