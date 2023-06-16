@@ -114,7 +114,7 @@ const usePlotData = () => {
           ...prevPoints,
           lagrangeModP: inputPoints.map((point) => ({
             x: point[0] % p,
-            y: point[1] % p,
+            y: point[1] >= 0 ? point[1] % p : (point[1] % p) + Number(p),
           })),
         }));
         const response = await httpPlotPolyLagrangeFieldModP(inputPoints, p);
@@ -159,7 +159,7 @@ const usePlotData = () => {
           ...prevPoints,
           newtonModP: inputPoints.map((point) => ({
             x: point[0] % p,
-            y: point[1] % p,
+            y: point[1] >= 0 ? point[1] % p : (point[1] % p) + Number(p),
           })),
         }));
         const response = await httpPlotPolyNewtonFieldModP(inputPoints, p);

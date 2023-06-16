@@ -19,7 +19,14 @@ const config = {
 
 const app = express();
 
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      "img-src": ["'self'", "https: data:"]
+    }
+  })
+)
 app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
@@ -29,6 +36,7 @@ app.use(
     origin: "http://localhost:3000",
   })
 );
+
 
 app.use(
   cookieSession({

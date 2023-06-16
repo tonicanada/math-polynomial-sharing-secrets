@@ -39,7 +39,7 @@ const App = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Router>
-        <Header />
+        <Header user={user}/>
         <Routes>
           <Route
             exact

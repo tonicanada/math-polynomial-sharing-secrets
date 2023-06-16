@@ -80,6 +80,8 @@ const lagrangeInterpolationFieldModP = (points, p) => {
   Polynomial.setField(`Z${p}`);
   let baseSum = new Polynomial([0]);
 
+  // console.log(new Polynomial(points.map(p => p[0])))
+
   for (let i = 0; i < points.length; i++) {
     let baseProd = new Polynomial([1]);
 
