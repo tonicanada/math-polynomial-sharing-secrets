@@ -28,10 +28,9 @@ body {
   justify-content: center;
   display: flex;
   align-items: center;
-  margin-top: 0;
   min-height: calc(100vh - 80px);
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 20px;
@@ -71,6 +70,9 @@ h2 {
 }
 
 .paragraph {
+  text-align: justify;
+  line-height: 20px;
+  hyphens: auto;
   width: 90%;
   margin-top: 20px;
   margin-bottom: 50px;
@@ -116,7 +118,7 @@ h2 {
 .modal-container {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 45px;
   gap: 20px;
   width: 100%;
 }
@@ -139,6 +141,7 @@ h2 {
   border-radius: 10px;
   padding: 20px;
   height: 100%;
+  margin-top: -40px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;

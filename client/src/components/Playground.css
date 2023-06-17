@@ -1,9 +1,11 @@
+
+
 .playcard-component {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   padding: 20px;
   height: 100%;
-  width: 800px;
+  width: 860px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -40,7 +42,7 @@
 .card-plot {
   flex-grow: 1;
   display: flex;
-  width: 325px;
+  width: 375px;
   height: auto;
   margin-bottom: 10px;
 }
@@ -61,7 +63,7 @@
 }
 
 .rounded-rectangle {
-  width: 325px;
+  width: 375px;
 }
 
 .prime-number-input {
@@ -83,3 +85,5 @@
   font-size: small;
   color: red;
 }
+
+

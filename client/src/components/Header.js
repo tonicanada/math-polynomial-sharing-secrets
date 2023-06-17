@@ -14,11 +14,11 @@ const Header = ({ user }) => {
                 Sign Out
               </a>
               <div className="user-circle">
-                <img
-                  src={user.photoUrl}
-                  alt="User"
-                  className="rounded-circle"
-                />
+                  <img
+                    src={user.photoUrl}
+                    alt="User"
+                    className="rounded-circle"
+                  />
               </div>
             </>
           ) : (

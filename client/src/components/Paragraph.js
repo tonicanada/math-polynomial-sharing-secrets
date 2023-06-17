@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 const Paragraph = () => {
   return (
     <div>
@@ -25,10 +23,12 @@ const Paragraph = () => {
         22, Number 11.
       </p>
       <p>
-        The methodology presented in the article is founded upon a property of
-        polynomial interpolation. By utilizing this{" "}
-        <Link to="/playground">Interpolation Playground</Link>, you can gain a
-        better understanding of how the method works.
+        The methodology described in the article is based on a fundamental
+        property of polynomial interpolation. To facilitate a deeper
+        comprehension of the technique, we have included a button below that
+        leads to an "Interpolation Playground". This interactive tool enables
+        users to explore and grasp the inner workings of the method more
+        effectively.
       </p>
       <p>
         The idea is simple: you want to generate a secret number that can only

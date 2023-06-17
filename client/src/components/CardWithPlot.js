@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ScatterPlot from "./ScatterPlot";
 import "katex/dist/katex.min.css";
-import { InlineMath, BlockMath } from "react-katex";
+import { InlineMath } from "react-katex";
 
 // [2,3],[10,20],[22,33],[50,10],[60,20]
 function CardWithPlot({

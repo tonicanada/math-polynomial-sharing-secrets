@@ -138,6 +138,14 @@ const GenerateSecretModal = ({ setCurrentPublicDataSecret }) => {
         return;
       }
 
+      if (required >= 100) {
+        closeFirstModal();
+        setMessage("Required people must be less or equal than 100");
+        setResponseStatus(false);
+        setSecondModalIsOpen(true);
+        return;
+      }
+
       if (required === 0 || total === 0) {
         closeFirstModal();
         setResponseStatus(false);
@@ -149,7 +157,7 @@ const GenerateSecretModal = ({ setCurrentPublicDataSecret }) => {
       // Call API
       const response = await httpGenerateSecret(total, required);
 
-      console.log(response)
+      console.log(response);
 
       if (response.ok) {
         closeFirstModal();
