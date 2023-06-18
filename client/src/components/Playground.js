@@ -32,6 +32,12 @@ const Playground = () => {
     const value = event.target.value;
     setInputPrimeValue(value);
 
+    if (parseInt(value) > 2 ** 50) {
+      setInputPrimeValue((""))
+      setPrime("");
+      setErrorPrime("The number exceeds the maximum limit");
+    }
+
     if (parseInt(value) > 1000) {
       const prime = calculateNextPrime(value);
       setPrime(prime.toString());
@@ -152,7 +158,7 @@ const Playground = () => {
           </div>
           {errorPrime && (
             <div className="prime-error">
-              Please enter a number greater than 1000 to compute its next prime
+              {errorPrime}
             </div>
           )}
         </div>
