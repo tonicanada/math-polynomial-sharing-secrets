@@ -109,10 +109,10 @@ const SecondModal = ({ isOpen, onClose, message, plotData, points }) => {
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customModalStyles}>
       {plotData.length > 0 ? (
         <div className="d-flex flex-column align-items-center justify-content-center">
-          <p className="fs-4 text-center">
-            Secret decoded successfully!!!
+          <p className="fs-4 text-center">Secret decoded successfully!!!</p>
+          <p className="fs-5 text-center">
+            Its value is f(0)={Number(message).toLocaleString()}
           </p>
-          <p className="fs-5 text-center">Its value is f(0)={Number(message).toLocaleString()}</p>
           <ScatterPlot plotData={plotData} points={points} />
         </div>
       ) : (

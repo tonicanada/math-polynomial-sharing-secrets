@@ -1,4 +1,3 @@
-const Polynomial = require("polynomial");
 const {
   lagrangeInterpolationFieldModP,
   generateRandomPolynomial,
@@ -19,15 +18,12 @@ const httpGenerateSecret = async (req, res) => {
     const { totalPeople, requiredPeople } = req.body;
 
     const poly = generateRandomPolynomial(requiredPeople, 0, prime);
-    const polySecret = new Array(requiredPeople).fill(0);
 
-    for (let key in poly.coeff) {
-      polySecret[key] = poly.coeff[key];
-    }
+    const polySecret = poly.coefficients;
 
     const shares = {};
     for (let i = 0; i < totalPeople; i++) {
-      shares[i + 1] = poly.eval(i + 1);
+      shares[i + 1] = poly.eval(BigInt(i + 1)) % BigInt(prime);
     }
 
     await Secret.findOneAndUpdate(
@@ -134,13 +130,13 @@ const httpCheckSecret = async (req, res) => {
       res.status(200).json({
         message: `${check.value}`,
         plotData: check.plotData,
-        points: check.points
+        points: check.points,
       });
     } else {
       res.status(200).json({
         message: "Secret decryption was not successful",
         plotData: check.plotData,
-        points: check.points
+        points: check.points,
       });
     }
   } catch (error) {

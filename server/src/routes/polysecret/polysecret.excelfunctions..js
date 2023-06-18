@@ -1,6 +1,9 @@
 const writeXlsxFile = require("write-excel-file/node");
 const readXlsxFile = require("read-excel-file/node");
-const { lagrangeInterpolationFieldModP } = require("../../utils/polynomial.utils");
+const {
+  lagrangeInterpolationFieldModP,
+  genIntArray,
+} = require("../../utils/polynomial.utils");
 const fs = require("fs");
 
 async function generateExcelWithShares(secret) {
@@ -46,31 +49,37 @@ async function checkSecretWithExcelShares(secret, filePath, p) {
       throw new Error("Wrong number of people required");
     }
 
-    const points = rows.filter((_, i) => i !== 0); // Drops header row
+    let points = rows.filter((_, i) => i !== 0); // Drops header row
     const poly = lagrangeInterpolationFieldModP(points, p);
     const plotData = [];
 
-    if (poly.coeff["0"] === secret.polySecret[0]) {
+    if (poly.coefficients[0] === BigInt(secret.polySecret[0])) {
       console.log("GOOD!!! Unlocked!!!");
+      points.unshift([0, Number(poly.coefficients[0])]);
 
-      plotData.push({ x: 0, y: Number(secret.polySecret[0]) });
+      let linspace = genIntArray(points, p, 0n, BigInt(secret.totalPeople));
 
-      for (point in secret.shares) {
-        plotData.push({ x: Number(point), y: Number(secret.shares[point]) });
+      linspace = linspace.map((p) => Number(p));
+
+      for (let i = 0; i < linspace.length; i++) {
+        plotData.push({
+          x: linspace[i],
+          y: secret.shares[linspace[i].toString()],
+        });
       }
 
       return {
         decoded: true,
-        value: poly.coeff["0"],
+        value: poly.coefficients[0],
         plotData,
-        points
+        points,
       };
     } else {
       return {
         decoded: false,
         value: undefined,
         plotData,
-        points
+        points,
       };
     }
   } catch (error) {

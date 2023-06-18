@@ -90,7 +90,6 @@ class Poly {
       .join(" + ");
     result = result.replace(/\+ -/g, "-");
     result = result.replace("x^1", "x")
-    console.log(result);
     return result;
   }
 }
