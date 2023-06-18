@@ -1,4 +1,5 @@
-const Polynomial = require("polynomial");
+// const Polynomial = require("polynomial");
+const { Polynomial } = require("./poly");
 const { secretSize } = require("../../config");
 
 // Function that checks if a number is prime
@@ -35,35 +36,49 @@ const findNextPrime = (num) => {
 // Polynomial.setField(`Z${findNextPrime(secretSize)}`);
 
 const modDivide = (numerator, denominator, p) => {
-  const denominatorModP = ((denominator % p) + p) % p; // Asegura que el denominador esté en el rango [0, p-1]
-  const inverse = modInverse(denominatorModP, p); // Calcula el inverso multiplicativo del denominador en módulo p
-  const result = (numerator * inverse) % p; // Realiza la división y aplica el módulo p al resultado
-  return (result + p) % p; // Asegura que el resultado sea positivo en caso de ser negativo
+  const denominatorModP = ((denominator % p) + p) % p;
+  const inverse = modInverse(denominatorModP, p);
+  const result = (numerator * inverse) % p;
+  return (result + p) % p;
 };
 
 const modInverse = (num, p) => {
   const [gcd, x, y] = extendedEuclidean(num, p);
-  if (gcd !== 1) {
+  if (gcd !== 1n) {
     throw new Error("No existe el inverso multiplicativo en módulo p");
   }
-  const result = ((x % p) + p) % p; // Asegura que el resultado sea positivo en caso de ser negativo
+  const result = ((x % p) + p) % p;
   return result;
 };
 
 const extendedEuclidean = (a, b) => {
-  // console.log("a", a, "b", b)
-  if (b === 0) {
-    return [a, 1, 0];
+  if (b === 0n) {
+    return [a, 1n, 0n];
   }
   const [gcd, x1, y1] = extendedEuclidean(b, a % b);
   const x = y1;
-  const y = x1 - Math.floor(a / b) * y1;
+  const y = x1 - ((a / b) | 0n) * y1;
   return [gcd, x, y];
 };
 
 const getRandomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  const randomNumber = BigInt(
+    Math.floor(Math.random() * (max - min + 1)) + min
+  );
+  return randomNumber;
 };
+
+// function polyModP(poly, p) {
+//   degree = poly.degree;
+//   polyArray = new Array(degree).fill(0);
+//   for (idx in poly.coeff) {
+//     polyArray[Number(idx)] = poly.coeff[idx];
+//   }
+//   const newCoefficients = polyArray.map((a) => {
+//     return a > 0 ? a % p : (a % p) + p;
+//   });
+//   return new Polynomial(newCoefficients);
+// }
 
 // Function that performs Lagrange interpolation using modular
 // arithmetic given an array of points and the prime number
@@ -77,45 +92,60 @@ const getRandomNumber = (min, max) => {
 // ]
 // prime = 33554467
 const lagrangeInterpolationFieldModP = (points, p) => {
-  Polynomial.setField(`Z${p}`);
-  let baseSum = new Polynomial([0]);
+  points = points.map((point) => [BigInt(point[0]), BigInt(point[1])]);
+  p = BigInt(p);
 
-  // console.log(new Polynomial(points.map(p => p[0])))
+  let baseSum = new Polynomial([0n]);
 
   for (let i = 0; i < points.length; i++) {
-    let baseProd = new Polynomial([1]);
+    let baseProd = new Polynomial([1n]);
 
     for (let j = 0; j < points.length; j++) {
       if (i !== j) {
-        const term = new Polynomial([-points[j][0], 1]).mul(
-          modDivide(1, points[i][0] - points[j][0], p)
+        let term = new Polynomial([-points[j][0] % p, 1n]);
+        term = term.mul(
+          new Polynomial([
+            modDivide(
+              1n,
+              ((points[i][0] % p) - (points[j][0] % p)) % p,
+              BigInt(p)
+            ),
+          ])
         );
+        term = term.mod(p);
         baseProd = baseProd.mul(term);
+        baseProd = baseProd.mod(p);
       }
     }
-    baseSum = baseSum.add(baseProd.mul(points[i][1]));
+    baseSum = baseSum.add(
+      baseProd.mul(new Polynomial([points[i][1] % p])).mod(p)
+    );
+    baseSum = baseSum.mod(p);
   }
 
   return baseSum;
 };
 
 const lagrangeInterpolationFieldReal = (points) => {
-  Polynomial.setField(`R`);
 
-  let baseSum = new Polynomial([0]);
+  let baseSum = new Polynomial([0], "float");
 
   for (let i = 0; i < points.length; i++) {
-    let baseProd = new Polynomial([1]);
+    let baseProd = new Polynomial([1], "float");
 
     for (let j = 0; j < points.length; j++) {
       if (i !== j) {
-        const term = new Polynomial([-points[j][0], 1]).mul(
-          1 / (points[i][0] - points[j][0])
+        let term = new Polynomial([-points[j][0], 1], "float");
+        console.log(term);
+        term = term.mul(
+          new Polynomial([1 / (points[i][0] - points[j][0])], "float")
         );
         baseProd = baseProd.mul(term);
       }
     }
-    baseSum = baseSum.add(baseProd.mul(points[i][1]));
+    baseSum = baseSum.add(
+      baseProd.mul(new Polynomial([points[i][1]], "float"))
+    );
   }
 
   return baseSum;
@@ -156,7 +186,8 @@ const newtonInterpolationFieldReal = (points) => {
 };
 
 const newtonInterpolationFieldModP = (points, prime) => {
-  Polynomial.setField(`Z${prime}`);
+  // Polynomial.setField(`Z${prime}`);
+  Polynomial.setField(`R`);
 
   const n = points.length;
   const a = new Array(n);
@@ -164,7 +195,7 @@ const newtonInterpolationFieldModP = (points, prime) => {
   const getPkNewton = (k, memo) => {
     // Base case
     if (k === 0) {
-      return new Polynomial([points[0][1]]);
+      return new Polynomial([points[0][1]] % prime);
     }
 
     // Check if result is in memo
@@ -174,13 +205,14 @@ const newtonInterpolationFieldModP = (points, prime) => {
     let c = 1;
     let p = new Polynomial([1]);
     for (let i = 0; i < k; i++) {
-      c *= points[k][0] - points[i][0];
+      c *= ((points[k][0] % prime) - (points[i][0] % prime)) % prime;
 
-      p = p.mul(new Polynomial([-points[i][0], 1]));
+      p = p.mul(new Polynomial([-points[i][0] % prime, 1]));
     }
     let res = getPkNewton(k - 1, memo).add(
       new Polynomial([
-        (points[k][1] - getPkNewton(k - 1, memo).eval(points[k][0])) *
+        ((points[k][1] % prime) -
+          (getPkNewton(k - 1, memo).eval(points[k][0] % prime) % prime)) *
           modDivide(1, c, prime),
       ]).mul(p)
     );
@@ -188,7 +220,7 @@ const newtonInterpolationFieldModP = (points, prime) => {
     return res;
   };
 
-  return getPkNewton(n - 1, a);
+  return polyModP(getPkNewton(n - 1, a), prime);
 };
 
 // Function that generates a random polynomial where all coefficients

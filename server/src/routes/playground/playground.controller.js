@@ -17,12 +17,16 @@ const genLinspace = (start, end, count) => {
 };
 
 const genIntArray = (points, p) => {
-  const start = points[0][0]%p;
-  const end = points[points.length - 1][0]%p;
+  points = points.map((point) => [BigInt(point[0]), BigInt(point[1])]);
+  p = BigInt(p);
 
-  const range = end - start + 1;
+  const start = points[0][0] % p;
+  const end = points[points.length - 1][0] % p;
 
-  const step = range < 100 ? 1 : Math.floor(range / points.length);
+  const range = end - start + 1n;
+
+  const step =
+    range < 100n ? 1n : BigInt(Math.floor(Number(range) / points.length));
 
   const array = [];
 
@@ -37,8 +41,15 @@ const genIntArray = (points, p) => {
       }
     }
   }
-  array.sort((a, b) => a - b);
-
+  array.sort((a, b) => {
+    if (a < b) {
+      return -1;
+    } else if (a > b) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
 
   return array;
 };
@@ -79,12 +90,16 @@ const httpGenerateLagrangeInterpolationFieldModP = async (req, res) => {
   const points = req.body.pointsArray.sort((p1, p2) => {
     return p1[0] - p2[0];
   });
-  const p = Number(req.body.p);
+  const p = BigInt(req.body.p);
   const poly = lagrangeInterpolationFieldModP(points, p);
   const linspace = genIntArray(points, p);
   const response = [];
   for (let i = 0; i < linspace.length; i++) {
-    response.push([linspace[i], poly.eval(linspace[i])]);
+    let eval = poly.eval(BigInt(linspace[i])) % p;
+
+    eval = eval >= 0 ? eval : (eval % p) + p;
+
+    response.push([BigInt(linspace[i]).toString(), eval.toString()]);
   }
   res.status(200).json({
     polyPoints: response,
