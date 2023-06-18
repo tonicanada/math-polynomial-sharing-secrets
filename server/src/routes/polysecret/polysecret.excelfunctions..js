@@ -61,7 +61,12 @@ async function checkSecretWithExcelShares(secret, filePath, p) {
 
       linspace = linspace.map((p) => Number(p));
 
-      for (let i = 0; i < linspace.length; i++) {
+      plotData.push({
+        x: 0,
+        y: Number(poly.coefficients[0])
+      })
+      
+      for (let i = 1; i < linspace.length; i++) {
         plotData.push({
           x: linspace[i],
           y: secret.shares[linspace[i].toString()],
