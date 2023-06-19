@@ -1,1 +1,1 @@
-npm run server
+cd server && node src/server.js
