@@ -1,1 +1,1 @@
-web: cd server && node src/server.js
+web: npm run heroku-deploy
