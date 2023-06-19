@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import Button from "react-bootstrap/Button";
 import { useDrop } from "react-dnd";
 import { NativeTypes } from "react-dnd-html5-backend";
-import { FileList } from "../FileList";
+import { FileList } from "./FileList";
 import { httpCheckSecret } from "../requests";
 import ScatterPlot from "./ScatterPlot";
 

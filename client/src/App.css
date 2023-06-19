@@ -79,14 +79,6 @@ h2 {
   color: black;
 }
 
-.paragraph a {
-  color: darkred;
-}
-
-.paragraph a:hover {
-  color: yellow; /* Cambia el color al pasar el cursor sobre el enlace */
-}
-
 .current-secret {
   border: 1px solid black;
   display: flex;
@@ -181,8 +173,6 @@ h2 {
   max-width: 100%;
   object-fit: contain;
 }
-
-
 
 @media (max-width: 768px) {
   .btn-login {

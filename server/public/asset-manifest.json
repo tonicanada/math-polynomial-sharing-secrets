@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.318598be.css",
-    "main.js": "/static/js/main.a81c7d32.js",
+    "main.css": "/static/css/main.ef30f0b3.css",
+    "main.js": "/static/js/main.fe164f63.js",
     "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
     "static/media/aldebaran-s-qtRF_RxCAo0-unsplash.jpg": "/static/media/aldebaran-s-qtRF_RxCAo0-unsplash.e5801009abf68ae7b59a.jpg",
     "static/media/KaTeX_AMS-Regular.ttf": "/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
@@ -65,12 +65,12 @@
     "static/media/KaTeX_Size3-Regular.woff": "/static/media/KaTeX_Size3-Regular.7947224e8a9914fa332b.woff",
     "static/media/KaTeX_Size3-Regular.woff2": "/static/media/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2",
     "index.html": "/index.html",
-    "main.318598be.css.map": "/static/css/main.318598be.css.map",
-    "main.a81c7d32.js.map": "/static/js/main.a81c7d32.js.map",
+    "main.ef30f0b3.css.map": "/static/css/main.ef30f0b3.css.map",
+    "main.fe164f63.js.map": "/static/js/main.fe164f63.js.map",
     "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.318598be.css",
-    "static/js/main.a81c7d32.js"
+    "static/css/main.ef30f0b3.css",
+    "static/js/main.fe164f63.js"
   ]
 }

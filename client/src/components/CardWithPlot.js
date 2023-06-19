@@ -3,7 +3,10 @@ import ScatterPlot from "./ScatterPlot";
 import "katex/dist/katex.min.css";
 import { InlineMath } from "react-katex";
 
-// [2,3],[10,20],[22,33],[50,10],[60,20]
+/*
+Component that plots the lagrange-polynomial given a set of points. 
+Example of input: [2,3],[10,20],[22,33],[50,10],[60,20]
+*/
 function CardWithPlot({
   handleSubmit,
   points,
@@ -16,7 +19,7 @@ function CardWithPlot({
   bottomMsg,
   plotTitle,
   prime,
-  setErrorPrime
+  setErrorPrime,
 }) {
   const [inputValue, setInputValue] = useState("");
 

@@ -16,7 +16,7 @@ const customModalStyles = {
     backgroundColor: "#fff",
     border: "none",
     borderRadius: "10px",
-    overflow: "auto", // Reemplaza 'padding' por 'overflow: auto'
+    overflow: "auto",
   },
 };
 
@@ -29,8 +29,6 @@ const FirstModal = ({
   requiredPeople,
   setRequiredPeople,
 }) => {
-  // const [totalPeople, setTotalPeople] = useState("");
-  // const [requiredPeople, setRequiredPeople] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -169,7 +167,6 @@ const GenerateSecretModal = ({ setCurrentPublicDataSecret }) => {
           totalPeople: total,
         });
       } else {
-        // La llamada a la API falló
         closeFirstModal();
         setResponseStatus(false);
         setMessage(
@@ -179,16 +176,13 @@ const GenerateSecretModal = ({ setCurrentPublicDataSecret }) => {
         throw new Error("Error al llamar a la API");
       }
     } catch (error) {
-      // Manejar el error de la llamada a la API
       setResponseStatus(false);
       console.error(error);
-      // Mostrar un mensaje de error al usuario si es necesario
     }
   };
 
   const handleSubmitDownloadShares = async () => {
-    const response = await httpDownloadShares();
-    console.log(response);
+    await httpDownloadShares();
   };
 
   return (

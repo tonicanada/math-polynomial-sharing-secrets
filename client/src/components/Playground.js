@@ -33,7 +33,7 @@ const Playground = () => {
     setInputPrimeValue(value);
 
     if (parseInt(value) > 2 ** 50) {
-      setInputPrimeValue((""))
+      setInputPrimeValue("");
       setPrime("");
       setErrorPrime("The number exceeds the maximum limit");
     }
@@ -65,7 +65,23 @@ const Playground = () => {
             <InlineMath>n</InlineMath> such that{" "}
             <InlineMath>p(x_i) = y_i</InlineMath> for all{" "}
             <InlineMath>i</InlineMath>. There are 2 main ways to compute this
-            polynomial, Lagrange and Newton Interpolation.
+            polynomial,{" "}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://en.wikipedia.org/wiki/Lagrange_polynomial"
+            >
+              Lagrange
+            </a>{" "}
+            and{" "}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://en.wikipedia.org/wiki/Newton_polynomial"
+            >
+              Newton Interpolation
+            </a>{" "}
+            .
           </p>
         </div>
 
@@ -156,11 +172,7 @@ const Playground = () => {
               readOnly
             />
           </div>
-          {errorPrime && (
-            <div className="prime-error">
-              {errorPrime}
-            </div>
-          )}
+          {errorPrime && <div className="prime-error">{errorPrime}</div>}
         </div>
         <div className="plot-container">
           <div className="h-100 d-flex flex-column align-items-center">
