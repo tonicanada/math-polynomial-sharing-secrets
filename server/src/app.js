@@ -6,9 +6,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const api = require("./routes/api");
-const {
-  passport,
-} = require("./routes/authEndpoints/authMiddleware");
+const { passport } = require("./routes/authEndpoints/authMiddleware");
 
 require("dotenv").config();
 
@@ -23,10 +21,14 @@ app.use(
   helmet.contentSecurityPolicy({
     useDefaults: true,
     directives: {
-      "img-src": ["'self'", "https: data:"]
-    }
+      "img-src": ["'self'", "https:", "data:"],
+      "worker-src": [
+        "'self'",
+        "blob:https://sharing-secret-app-922544ef5b26.herokuapp.com",
+      ],
+    },
   })
-)
+);
 app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
@@ -36,7 +38,6 @@ app.use(
     origin: "http://localhost:3000",
   })
 );
-
 
 app.use(
   cookieSession({
