@@ -32,7 +32,7 @@ const Playground = () => {
     const value = event.target.value;
     setInputPrimeValue(value);
 
-    if (parseInt(value) > 2 ** 50) {
+    if (parseInt(value) > 2 ** 46) {
       setInputPrimeValue("");
       setPrime("");
       setErrorPrime("The number exceeds the maximum limit");
