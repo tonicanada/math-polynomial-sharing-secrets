@@ -11,8 +11,7 @@
     "client": "npm start --prefix client",
     "watch": "npm run server & npm run client",
     "test": "npm test --prefix server && npm test --prefix client",
-    "deploy": "npm run build --prefix client && npm start --prefix server",
-    "heroku-deploy": "cd server && npm install && npm start"
+    "deploy": "npm run build --prefix client && npm start --prefix server"
   },
   "keywords": [],
   "author": "",
