@@ -20,7 +20,15 @@ const Paragraph = () => {
           Adi Shamir
         </a>{" "}
         (MIT) and published in Communications of the ACM, November 1979, Volume
-        22, Number 11.
+        22, Number 11.{" "}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/tonicanada/math-polynomial-sharing-secrets"
+        >
+          Here
+        </a>{" "}
+        you can find the web-app Github Repository.
       </p>
       <p>
         The methodology described in the article is based on a fundamental
